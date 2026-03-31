@@ -27,9 +27,6 @@ class AffiliateController extends Controller
     }
     // Lưu dữ liệu Quán
     public function storeShop(Request $request) {   
-        // dd($request->all());
-
-        
        $request->validate([
         'ref_code' => 'required|exists:users,affiliate_id',
             'shop_name'    => 'required|string|max:255',
@@ -51,6 +48,7 @@ class AffiliateController extends Controller
         // if (!$sale) {
         //     return back()->withErrors(['ref_code' => 'Mã giới thiệu không tồn tại.']);
         // }
+        
         $gpkdPath = null;
         if ($request->hasFile('gpkd_file')) {
             // Cách lưu tường minh
@@ -69,10 +67,6 @@ class AffiliateController extends Controller
         $cccdPath = $request->hasFile('cccd_file') ? $request->file('cccd_file')->store('shops/cccd', 'public') : null;
         
 
-        // // Xử lý lưu file vào thư mục storage
-        // $gpkdPath = $request->hasFile('gpkd_file') ? $request->file('gpkd_file')->store('shops/legal', 'public') : null;
-        // $cccdPath = $request->hasFile('cccd_file') ? $request->file('cccd_file')->store('shops/legal', 'public') : null;
-
         // 4. Lưu vào bảng shops
         Shop::create([
             'name'           => $request->shop_name,
@@ -89,9 +83,10 @@ class AffiliateController extends Controller
             'pos_price'      => $request->pos_price ?? 1800000,
             'status'         => 'pending', // Chờ duyệt
         ]);
+        return redirect()->route('register.shop.success')->with('sale_phone', $sale->phone);
 
             // 5. Trả về thông báo thành công
-        return back()->with('success', 'Gửi thông tin đăng ký thành công! Chúng tôi sẽ liên hệ lại sớm.');
+        // return back()->with('success', 'Gửi thông tin đăng ký thành công! Chúng tôi sẽ liên hệ lại sớm.');
     }
 
     public function storeSale(Request $request) {
