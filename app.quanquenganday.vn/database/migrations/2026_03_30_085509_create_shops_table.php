@@ -13,14 +13,20 @@ return new class extends Migration
     {
         Schema::create('shops', function (Blueprint $table) {
         $table->id();
-        $table->string('name');
-        $table->string('owner_name');
-        $table->string('phone');
-        $table->string('address');
-        $table->string('type'); // cafe, food, milktea
-        $table->foreignId('sale_id')->constrained('users'); // Sale nào giới thiệu quán này
-        $table->string('status')->default('pending'); // pending, active
+        $table->string('name');           // Tên quán
+        // $table->string('type');           // Loại hình (cafe, food...)
+        $table->string('owner_name');     // Tên chủ quán
+        $table->string('phone');          // Số điện thoại
+        $table->string('address_number'); // Số nhà
+        $table->string('street');         // Tên đường
+        $table->string('ward')->nullable(); // Phường/Xã
+        $table->string('city')->nullable(); // Tỉnh/TP
+        $table->string('tax_code')->nullable(); // Mã số thuế
+        $table->string('gpkd_path')->nullable(); // Đường dẫn ảnh GPKD
+        $table->string('cccd_path')->nullable(); // Đường dẫn ảnh CCCD
         $table->decimal('pos_price', 15, 2)->default(1800000);
+        $table->foreignId('sale_id')->constrained('users'); 
+        $table->string('status')->default('pending');
         $table->timestamps();
     });     
     }
