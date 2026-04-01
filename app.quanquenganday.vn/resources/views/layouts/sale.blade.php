@@ -6,10 +6,6 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Ứng dụng Quán Quen Gần Đây') }}</title>
-<link rel="icon" href="{{ asset('cropped-quanquen-vn-32x32.webp') }}" sizes="32x32" type="image/webp" />
-<link rel="icon" href="{{ asset('cropped-quanquen-vn-192x192.webp') }}" sizes="192x192" type="image/webp" />
-<link rel="apple-touch-icon" href="{{ asset('cropped-quanquen-vn-180x180.webp') }}" type="image/webp" />
-
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -17,10 +13,17 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body>
-        <div class="font-sans text-gray-900 antialiased">
-            {{ $slot }}
+    <body class="font-sans antialiased">
+        <x-banner />
+
+        <div class="min-h-screen bg-gray-100">
+            @livewire('navigation-menu')
+        
+            <main>
+                {{-- {{ $slot }} --}}                
+            </main>
         </div>
+        @stack('modals')
 
         @livewireScripts
     </body>

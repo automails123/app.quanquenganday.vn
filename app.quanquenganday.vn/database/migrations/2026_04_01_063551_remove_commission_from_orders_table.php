@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('shops', function (Blueprint $table) {
-            //
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn('commission');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('shops', function (Blueprint $table) {
-            //
+        Schema::table('orders', function (Blueprint $table) {
+            $table->decimal('commission', 15, 2)->default(0);
         });
     }
 };

@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('password_reset_tokens', function (Blueprint $table) {
-        $table->string('otp')->nullable(); // Lưu mã 6 số
-        $table->timestamp('expires_at')->nullable(); // Thời hạn 5-10 phút
-    });
+        Schema::create('settings', function (Blueprint $table) {
+            $table->id();
+            $table->string('key')->unique();
+        $table->text('value')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -22,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('password_reset_tokens', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('settings');
     }
 };

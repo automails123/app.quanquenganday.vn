@@ -1,10 +1,9 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 max-md:fixed max-md:bottom-0 w-full">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
+    <div class="container mx-auto">
+        <div class="flex justify-between items-center h-16 max-md:px-3">
             <!-- Navigation Links -->
-            <div class="">
-                <x-nav-link class="gap-1 md:gap-2 max-md:flex-col" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-nav-link class="gap-1 md:gap-2 max-md:flex-col max-md:items-center max-md:flex-1 max-md:text-xs" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                         fill="currentcolor" viewBox="0 0 256 256">
                         <path
@@ -12,253 +11,258 @@
                         </path>
                     </svg> {{ __('Home') }}
                 </x-nav-link>
-            </div>
-            <div class="ms-2">
-                <div class="flex gap-2 md:gap-6">
+                <div class="relative max-md:flex-1">
+                    <x-dropdown align="right" width="100">
+                        <x-slot name="trigger">
+                            <span
+                                class="inline-flex items-center gap-1 md:gap-1 cursor-pointer text-gray-500 max-md:flex-col max-md:items-center max-md:text-xs">
+                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                    fill="currentColor" viewBox="0 0 256 256">
+                                    <path
+                                        d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z">
+                                    </path>
+                                </svg>
+                                Thông báo
+                            </span>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <div class=" max-w-sm px-4 py-2 md:py-4 w-full">
+                                <div class="flex items-center justify-between gap-2 md:gap-4">
+                                    <div class="inline-flex items-center gap-2">
+                                        <span
+                                            class="flex-shrink-0 rounded-full border bg-white text-black w-8 h-8 inline-flex items-center justify-center">
+                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
+                                                height="32" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                        <div>
+                                            <p class="font-bold">Thông báo</p>
+                                            <p class="text-gray-500 text-sm">Quán & sale từ link của bạn</p>
+                                        </div>
+                                    </div>
+                                    <span
+                                        class="w-8 h-8 bg-black rounded-xl text-white flex items-center justify-center flex-shrink-0">
+                                        <span class="relative">
+                                            <i
+                                                class="rounded-full w-2 h-2 bg-red-500 block absolute -top-0.5 -right-0.5"></i>
+                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="32"
+                                                height="32" fill="currentColor" viewBox="0 0 256 256">
+                                                <path
+                                                    d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z">
+                                                </path>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="pb-2 pt-3 md:pt-4 flex flex-col gap-4">
+                                    <div class="rounded-2xl bg-black p-3 flex">
+                                        <div class="flex gap-1 md:gap-2">
+                                            <span
+                                                class="bg-blue-100 rounded-2xl w-9 h-9 flex items-center justify-center text-blue-500 flex-shrink-0">
+                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
+                                                    height="32" fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <div class="text-white">
+                                                <p class="font-bold">Có quán mới đăng ký</p>
+                                                <p class="text-xs text-gray-300">Cafe mộc đăng ký từ link của bạn
+                                                </p>
+                                                <p class="text-xs text-gray-300 mt-0.5">Hôm nay, 08:40</p>
+                                            </div>
+                                        </div>
+                                        <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
+                                    </div>
+                                    <!--Sale-->
+                                    <div class="rounded-2xl bg-black p-3 flex">
+                                        <div class="flex gap-1 md:gap-2">
+                                            <span
+                                                class="bg-green-100 rounded-2xl w-9 h-9 flex items-center justify-center text-green-500 flex-shrink-0">
+                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
+                                                    height="32" fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <div class="text-white">
+                                                <p class="font-bold">Có sale mới</p>
+                                                <p class="text-xs text-gray-300">Trần văn B đăng ký từ link của bạn
+                                                </p>
+                                                <p class="text-xs text-gray-300 mt-0.5">Hôm nay, 08:40</p>
+                                            </div>
+                                        </div>
+                                        <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
+                                    </div>
+                                    <!--admin-->
+                                    <div class="rounded-2xl bg-slate-100 p-3 flex">
+                                        <div class="flex gap-1 md:gap-2">
+                                            <span
+                                                class="bg-green-100 rounded-2xl w-9 h-9 flex items-center justify-center text-green-500 flex-shrink-0">
+                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
+                                                    height="32" fill="currentColor" viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <div class="text-black">
+                                                <p class="font-bold">Thông báo Admin</p>
+                                                <p class="text-xs text-gray-500">Nhắc nhở bổ sung quán
+                                                </p>
+                                                <p class="text-xs text-gray-500 mt-0.5">Hôm nay, 08:40</p>
+                                            </div>
+                                        </div>
+                                        <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+                <x-nav-link title="Tạo đơn hàng" class="gap-1 md:gap-1 max-md:flex-col max-md:items-center max-md:flex-1 max-md:text-xs"
+                    href="{{ route('sale.orders.create') }}">
+                    <span
+                        class="bg-black text-white rounded-full min-w-10 min-h-10 flex items-center justify-center shadow-sm">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                            fill="currentColor" viewBox="0 0 256 256">
+                            <path
+                                d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z">
+                            </path>
+                        </svg>
+                    </span>
+                </x-nav-link>
+
+
+                <x-nav-link class="gap-1 md:gap-1 max-md:flex-col max-md:items-center max-md:flex-1 max-md:text-xs" href="">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                        fill="currentcolor" viewBox="0 0 256 256">
+                        <path
+                            d="M152,120H136V56h8a32,32,0,0,1,32,32,8,8,0,0,0,16,0,48.05,48.05,0,0,0-48-48h-8V24a8,8,0,0,0-16,0V40h-8a48,48,0,0,0,0,96h8v64H104a32,32,0,0,1-32-32,8,8,0,0,0-16,0,48.05,48.05,0,0,0,48,48h16v16a8,8,0,0,0,16,0V216h16a48,48,0,0,0,0-96Zm-40,0a32,32,0,0,1,0-64h8v64Zm40,80H136V136h16a32,32,0,0,1,0,64Z">
+                        </path>
+                    </svg>
+                    {{ __('Đơn hàng') }}
+                </x-nav-link>
+
+                <!-- Teams Dropdown -->
+                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="relative">
-                        <x-dropdown align="right" width="100">
+                        <x-dropdown align="right" width="60">
                             <x-slot name="trigger">
-                                <span class="inline-flex items-center gap-1 md:gap-1 cursor-pointer text-gray-500">
-                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
-                                        height="32" fill="currentColor" viewBox="0 0 256 256">
-                                        <path
-                                            d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z">
-                                        </path>
-                                    </svg>
-                                    Thông báo
+                                <span class="inline-flex rounded-md">
+                                    <button type="button"
+                                        class="inline-flex items-center gap-1 md:gap-1 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                                        {{ Auth::user()->currentTeam->name }}
+
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                        </svg>
+                                    </button>
                                 </span>
                             </x-slot>
 
                             <x-slot name="content">
-                                <div class=" max-w-sm px-4 py-2 md:py-4 w-full">
-                                    <div class="flex items-center justify-between gap-2 md:gap-4">
-                                        <div class="inline-flex items-center gap-2">
-                                            <span
-                                                class="flex-shrink-0 rounded-full border bg-white text-black w-8 h-8 inline-flex items-center justify-center">
-                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
-                                                    height="32" fill="currentColor" viewBox="0 0 256 256">
-                                                    <path
-                                                        d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z">
-                                                    </path>
-                                                </svg>
-                                            </span>
-                                            <div>
-                                                <p class="font-bold">Thông báo</p>
-                                                <p class="text-gray-500 text-sm">Quán & sale từ link của bạn</p>
-                                            </div>
-                                        </div>
-                                        <span
-                                            class="w-8 h-8 bg-black rounded-xl text-white flex items-center justify-center flex-shrink-0">
-                                            <span class="relative">
-                                                <i
-                                                    class="rounded-full w-2 h-2 bg-red-500 block absolute -top-0.5 -right-0.5"></i>
-                                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="32"
-                                                    height="32" fill="currentColor" viewBox="0 0 256 256">
-                                                    <path
-                                                        d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z">
-                                                    </path>
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </div>
-                                    <div class="pb-2 pt-3 md:pt-4 flex flex-col gap-4">
-                                        <div class="rounded-2xl bg-black p-3 flex">
-                                            <div class="flex gap-1 md:gap-2">
-                                                <span
-                                                    class="bg-blue-100 rounded-2xl w-9 h-9 flex items-center justify-center text-blue-500 flex-shrink-0">
-                                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
-                                                        width="32" height="32" fill="currentColor"
-                                                        viewBox="0 0 256 256">
-                                                        <path
-                                                            d="M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z">
-                                                        </path>
-                                                    </svg>
-                                                </span>
-                                                <div class="text-white">
-                                                    <p class="font-bold">Có quán mới đăng ký</p>
-                                                    <p class="text-xs text-gray-300">Cafe mộc đăng ký từ link của bạn
-                                                    </p>
-                                                    <p class="text-xs text-gray-300 mt-0.5">Hôm nay, 08:40</p>
-                                                </div>
-                                            </div>
-                                            <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
-                                        </div>
-                                        <!--Sale-->
-                                        <div class="rounded-2xl bg-black p-3 flex">
-                                            <div class="flex gap-1 md:gap-2">
-                                                <span
-                                                    class="bg-green-100 rounded-2xl w-9 h-9 flex items-center justify-center text-green-500 flex-shrink-0">
-                                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
-                                                        width="32" height="32" fill="currentColor"
-                                                        viewBox="0 0 256 256">
-                                                        <path
-                                                            d="M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z">
-                                                        </path>
-                                                    </svg>
-                                                </span>
-                                                <div class="text-white">
-                                                    <p class="font-bold">Có sale mới</p>
-                                                    <p class="text-xs text-gray-300">Trần văn B đăng ký từ link của bạn
-                                                    </p>
-                                                    <p class="text-xs text-gray-300 mt-0.5">Hôm nay, 08:40</p>
-                                                </div>
-                                            </div>
-                                            <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
-                                        </div>
-                                        <!--admin-->
-                                        <div class="rounded-2xl bg-slate-100 p-3 flex">
-                                            <div class="flex gap-1 md:gap-2">
-                                                <span
-                                                    class="bg-green-100 rounded-2xl w-9 h-9 flex items-center justify-center text-green-500 flex-shrink-0">
-                                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"
-                                                        width="32" height="32" fill="currentColor"
-                                                        viewBox="0 0 256 256">
-                                                        <path
-                                                            d="M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z">
-                                                        </path>
-                                                    </svg>
-                                                </span>
-                                                <div class="text-black">
-                                                    <p class="font-bold">Thông báo Admin</p>
-                                                    <p class="text-xs text-gray-500">Nhắc nhở bổ sung quán
-                                                    </p>
-                                                    <p class="text-xs text-gray-500 mt-0.5">Hôm nay, 08:40</p>
-                                                </div>
-                                            </div>
-                                            <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
-                                        </div>
+                                <div class="w-60">
+                                    <!-- Team Management -->
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        {{ __('Manage Team') }}
                                     </div>
 
-                                </div>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
+                                    <!-- Team Settings -->
+                                    <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
+                                        {{ __('Team Settings') }}
+                                    </x-dropdown-link>
 
-                    <x-nav-link class="gap-1 md:gap-1 max-md:flex-col" href="">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                            fill="currentcolor" viewBox="0 0 256 256">
-                            <path
-                                d="M152,120H136V56h8a32,32,0,0,1,32,32,8,8,0,0,0,16,0,48.05,48.05,0,0,0-48-48h-8V24a8,8,0,0,0-16,0V40h-8a48,48,0,0,0,0,96h8v64H104a32,32,0,0,1-32-32,8,8,0,0,0-16,0,48.05,48.05,0,0,0,48,48h16v16a8,8,0,0,0,16,0V216h16a48,48,0,0,0,0-96Zm-40,0a32,32,0,0,1,0-64h8v64Zm40,80H136V136h16a32,32,0,0,1,0,64Z">
-                            </path>
-                        </svg>
-                        {{ __('Đơn hàng') }}
-                    </x-nav-link>
-
-                    <!-- Teams Dropdown -->
-                    @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                        <div class="relative">
-                            <x-dropdown align="right" width="60">
-                                <x-slot name="trigger">
-                                    <span class="inline-flex rounded-md">
-                                        <button type="button"
-                                            class="inline-flex items-center gap-1 md:gap-1 px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                            {{ Auth::user()->currentTeam->name }}
-
-                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                            </svg>
-                                        </button>
-                                    </span>
-                                </x-slot>
-
-                                <x-slot name="content">
-                                    <div class="w-60">
-                                        <!-- Team Management -->
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            {{ __('Manage Team') }}
-                                        </div>
-
-                                        <!-- Team Settings -->
-                                        <x-dropdown-link
-                                            href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
-                                            {{ __('Team Settings') }}
+                                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                                        <x-dropdown-link href="{{ route('teams.create') }}">
+                                            {{ __('Create New Team') }}
                                         </x-dropdown-link>
+                                    @endcan
 
-                                        @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                                            <x-dropdown-link href="{{ route('teams.create') }}">
-                                                {{ __('Create New Team') }}
-                                            </x-dropdown-link>
-                                        @endcan
+                                    <!-- Team Switcher -->
+                                    @if (Auth::user()->allTeams()->count() > 1)
+                                        <div class="border-t border-gray-200"></div>
 
-                                        <!-- Team Switcher -->
-                                        @if (Auth::user()->allTeams()->count() > 1)
-                                            <div class="border-t border-gray-200"></div>
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            {{ __('Switch Teams') }}
+                                        </div>
 
-                                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                                {{ __('Switch Teams') }}
-                                            </div>
-
-                                            @foreach (Auth::user()->allTeams() as $team)
-                                                <x-switchable-team :team="$team" />
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </x-slot>
-                            </x-dropdown>
-                        </div>
-                    @endif
-
-                    <!-- Settings Dropdown -->
-                    <div class="ms-3 relative">
-                        <x-dropdown align="right" width="48">
-                            <x-slot name="trigger">
-                                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                    <button
-                                        class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                        <img class="size-8 rounded-full object-cover"
-                                            src="{{ Auth::user()->profile_photo_url }}"
-                                            alt="{{ Auth::user()->name }}" />
-                                    </button>
-                                @else
-                                    <button type="button"
-                                        class="max-md:flex-col inline-flex gap-1 md:gap-1 border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
-                                            height="32" fill="currentColor" viewBox="0 0 256 256">
-                                            <path
-                                                d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z">
-                                            </path>
-                                        </svg>
-                                        {{ __('Cá nhân') }}
-
-                                    </button>
-                                @endif
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <!-- Account Management -->
-                                <div class="block px-4 py-2 text-xs text-gray-400">
-                                    {{ __('Manage Account') }}
+                                        @foreach (Auth::user()->allTeams() as $team)
+                                            <x-switchable-team :team="$team" />
+                                        @endforeach
+                                    @endif
                                 </div>
-
-                                <x-dropdown-link href="{{ route('profile.show') }}">
-                                    {{ __('Profile') }}
-                                </x-dropdown-link>
-
-                                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                    <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                        {{ __('API Tokens') }}
-                                    </x-dropdown-link>
-                                @endif
-
-                                <div class="border-t border-gray-200"></div>
-
-                                <!-- Authentication -->
-                                <form method="POST" action="{{ route('logout') }}" x-data>
-                                    @csrf
-
-                                    <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                        {{ __('Log Out') }}
-                                    </x-dropdown-link>
-                                </form>
                             </x-slot>
                         </x-dropdown>
                     </div>
+                @endif
+
+                <!-- Settings Dropdown -->
+                <div class="ms-3 relative">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                                <button
+                                    class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                    <img class="size-8 rounded-full object-cover"
+                                        src="{{ Auth::user()->profile_photo_url }}"
+                                        alt="{{ Auth::user()->name }}" />
+                                </button>
+                            @else
+                                <button type="button"
+                                    class="max-md:flex-col inline-flex gap-1 md:gap-1 border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
+                                        height="32" fill="currentColor" viewBox="0 0 256 256">
+                                        <path
+                                            d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z">
+                                        </path>
+                                    </svg>
+                                    {{ __('Cá nhân') }}
+
+                                </button>
+                            @endif
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <!-- Account Management -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Manage Account') }}
+                            </div>
+
+                            <x-dropdown-link href="{{ route('profile.show') }}">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
+
+                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                                    {{ __('API Tokens') }}
+                                </x-dropdown-link>
+                            @endif
+
+                            <div class="border-t border-gray-200"></div>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}" x-data>
+                                @csrf
+
+                                <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
                 </div>
-            </div>
             <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
+            {{-- <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="size-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -269,7 +273,7 @@
                             stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-            </div>
+            </div> --}}
         </div>
     </div>
 

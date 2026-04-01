@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Shop;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -121,6 +122,9 @@ class AffiliateController extends Controller
         $request->validate($rules, $messages);
         // 2. Tìm người giới thiệu (Parent)
         $parent = User::where('affiliate_id', $request->ref_code)->first();
+        // 3. Xác định Level dựa trên Role của người giới thiệu
+// Nếu Parent là admin -> Level 1. Nếu không -> Level của Parent + 1
+    $newUserLevel = ($parent->role === 'admin') ? 1 : ($parent->level + 1);
         
         // 3. Tạo tài khoản Sale mới
         $user = User::create([
@@ -129,13 +133,14 @@ class AffiliateController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'parent_id' => $parent->id,
-            'level' => $parent->level + 1,
+            'level' => $newUserLevel,
             'role' => 'sale',
+            'affiliate_id' => 'SALE' . strtoupper(Str::random(6)),
         ]);
 
         // 4. Đăng nhập ngay và chuyển hướng
         Auth::login($user);
-        return redirect('/dashboard');
+        return redirect()->route('sale.dashboard');
     }
 
 
