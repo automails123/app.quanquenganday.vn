@@ -3,16 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AffiliateController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-
-
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Sale\DashboardController as SaleDashboard;
 use App\Http\Controllers\Sale\OrderController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Mail\OtpMail;
 use Illuminate\Support\Facades\Mail;
-
+use App\Http\Controllers\BankAccountController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\OTPController;
+use App\Http\Controllers\CCCDController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -90,6 +92,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 //xoá cached
 use Illuminate\Support\Facades\Artisan;
 
+
 Route::get('/clear-all-cache', function() {
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
@@ -98,16 +101,37 @@ Route::get('/clear-all-cache', function() {
 });
 
 
-// Route::post('/user/update-password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])
-//      ->name('user.password.update');
-
-
 Route::middleware(['auth'])->group(function () {
     // Route hiển thị Form (GET)
     Route::get('/profile/change-password', [ProfileController::class, 'editPassword'])
-         ->name('password.change'); // Tên này phải khớp với trong Blade
-
+         ->name('password.change'); 
     // Route xử lý Lưu mật khẩu (POST/PUT)
     Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])
          ->name('user.password.update');
+
+    // 1. Route để hiển thị trang nhập thông tin (GET)
+    Route::get('/bank-account', [BankAccountController::class, 'index'])->name('bank.index');
+    // 2. Route để xử lý lưu dữ liệu khi nhấn nút (POST)
+    Route::post('/bank-account', [BankAccountController::class, 'store'])->name('bank.store');
+
+    Route::get('/verify-account', [VerificationController::class, 'index'])->name('verify.index');
+    // Route xử lý gửi lại Email
+    Route::post('/email/verification-notification', [VerificationController::class, 'send'])
+        ->middleware('throttle:6,1') // Giới hạn 1 phút chỉ được nhấn 6 lần tránh spam
+        ->name('verification.send');
+
+    // Route xử lý khi User click vào link trong Email gửi về
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect()->route('verify.index')->with('status', 'Email của bạn đã được xác minh thành công!');
+    })->middleware(['signed'])->name('verification.verify');
+
+    Route::post('/send-otp', [OTPController::class, 'sendOtp'])->name('otp.send');
+    Route::post('/verify-otp', [OTPController::class, 'verifyOtp'])->name('otp.verify');
+
+    Route::post('/verify-cccd/upload', [CCCDController::class, 'upload'])->name('cccd.upload');
 });
+
+
+
+

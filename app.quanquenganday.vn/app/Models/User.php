@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,12 +11,13 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
 
     /** @use HasFactory<UserFactory> */
     use HasFactory;
+    use Notifiable;
 
     use HasProfilePhoto;
     use Notifiable;
@@ -38,6 +39,9 @@ class User extends Authenticatable
         'level',         
         'role',          
         'balance',
+        'cccd_front_image',
+        'cccd_back_image',
+        'cccd_status',
     ];
     protected static function booted()
 {
@@ -204,7 +208,12 @@ class User extends Authenticatable
         return $ids;
     }
     public function area()
-{
-    return $this->belongsTo(Area::class, 'area_id');
-}
+    {
+        return $this->belongsTo(Area::class, 'area_id');
+    }
+    public function bankAccount()
+    {
+        // Mặc định Laravel tìm user_id, nếu bạn đặt tên khác thì điền vào tham số thứ 2
+        return $this->hasOne(BankAccount::class); 
+    }
 }

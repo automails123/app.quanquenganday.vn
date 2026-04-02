@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Thêm cột phone vào sau cột email, cho phép null nếu muốn
-            $table->string('phone')->nullable()->after('email'); 
+            $table->string('cccd_front_image')->nullable(); // Ảnh mặt trước
+            $table->string('cccd_back_image')->nullable();  // Ảnh mặt sau
+            $table->string('cccd_status')->default('pending'); // pending, approved, rejected
+            $table->timestamp('cccd_verified_at')->nullable();
         });
     }
 
@@ -23,7 +25,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('phone');
+            //
         });
     }
 };

@@ -295,10 +295,10 @@
                                 </div>
                             </div>
 
-                            <div class="px-6 space-y-4">
+                            <div class="px-6 pb-4 space-y-4 overflow-y-auto max-h-screen">
                                 <h3 class="text-lg font-black text-gray-900 mb-2">Cài đặt cá nhân</h3>
 
-                                <div class="bg-white space-y-4 overflow-hidden">
+                                <div class="bg-white space-y-4 ">
                                     <a href="{{ route('profile.show') }}"
                                         class="flex items-center justify-between p-3 md:p-4 bg-gray-100 hover:bg-gray-200 transition-colors border-b border-gray-50 rounded-2xl">
                                         <div class="flex items-center gap-2 md:gap-4">
@@ -310,16 +310,16 @@
                                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                                 </svg>
                                             </div>
-                                            <span class="font-bold text-gray-700 text-sm md:text-base">Thông tin cá nhân</span>
+                                            <span class="font-bold text-gray-700 text-sm md:text-base">Thông tin cá
+                                                nhân</span>
                                         </div>
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path d="M9 5l7 7-7 7" />
                                         </svg>
                                     </a>
-
-                                    <a href="#"
-                                       class="flex items-center justify-between p-3 md:p-4 bg-gray-100 hover:bg-gray-200 transition-colors border-b border-gray-50 rounded-2xl">
+                                    <a href="{{ route('verify.index') }}"
+                                        class="flex items-center justify-between p-3 md:p-4 bg-gray-100 hover:bg-gray-200 transition-colors border-b border-gray-50 rounded-2xl">
                                         <div class="flex items-center gap-2 md:gap-4">
                                             <div
                                                 class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-black border">
@@ -329,15 +329,15 @@
                                                         d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                                 </svg>
                                             </div>
-                                            <span class="font-bold text-gray-700 text-sm md:text-base">Xác minh tài khoản</span>
+                                            <span class="font-bold text-gray-700 text-sm md:text-base">Xác minh tài
+                                                khoản</span>
                                         </div>
-                                         <svg class="w-5 h-5"  fill="none" stroke="currentColor"
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path d="M9 5l7 7-7 7" />
                                         </svg>
                                     </a>
-
-                                    <a href="#"
+                                    <a href="{{ route('bank.index') }}"
                                         class="flex items-center justify-between p-3 md:p-4 bg-gray-100 hover:bg-gray-200 transition-colors border-b border-gray-50 rounded-2xl">
                                         <div class="flex items-center gap-2 md:gap-4">
                                             <div
@@ -348,9 +348,10 @@
                                                         d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
                                                 </svg>
                                             </div>
-                                            <span class="font-bold text-gray-700 text-sm md:text-base">Tài khoản ngân hàng</span>
+                                            <span class="font-bold text-gray-700 text-sm md:text-base">Tài khoản ngân
+                                                hàng</span>
                                         </div>
-                                         <svg class="w-5 h-5"  fill="none" stroke="currentColor"
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path d="M9 5l7 7-7 7" />
                                         </svg>
@@ -367,47 +368,86 @@
                                                         d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                                                 </svg>
                                             </div>
-                                            <span class="font-bold text-gray-700 text-sm md:text-base">Đổi mật khẩu</span>
+                                            <span class="font-bold text-gray-700 text-sm md:text-base">Đổi mật
+                                                khẩu</span>
                                         </div>
-                                         <svg class="w-5 h-5"  fill="none" stroke="currentColor"
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path d="M9 5l7 7-7 7" />
                                         </svg>
                                     </a>
+                                    <a href="{{ route('password.change') }}"
+                                        class="flex items-center justify-between p-3 md:p-4 bg-gray-100 hover:bg-gray-200 transition-colors border-b border-gray-50 rounded-2xl">
+                                        <div class="flex items-center gap-2 md:gap-4">
+                                            <div
+                                                class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-black border">
+                                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                    width="32" height="32" fill="currentColor"
+                                                    viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M165.66,90.34a8,8,0,0,1,0,11.32l-64,64a8,8,0,0,1-11.32-11.32l64-64A8,8,0,0,1,165.66,90.34ZM215.6,40.4a56,56,0,0,0-79.2,0L106.34,70.45a8,8,0,0,0,11.32,11.32l30.06-30a40,40,0,0,1,56.57,56.56l-30.07,30.06a8,8,0,0,0,11.31,11.32L215.6,119.6a56,56,0,0,0,0-79.2ZM138.34,174.22l-30.06,30.06a40,40,0,1,1-56.56-56.57l30.05-30.05a8,8,0,0,0-11.32-11.32L40.4,136.4a56,56,0,0,0,79.2,79.2l30.06-30.07a8,8,0,0,0-11.32-11.31Z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <span class="font-bold text-gray-700 text-sm md:text-base">Công cụ</span>
+                                        </div>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                    <a href="https://www.youtube.com/shorts/FBHUuvXpJDM"
+                                        class="flex items-center justify-between p-3 md:p-4 bg-gray-100 hover:bg-gray-200 transition-colors border-b border-gray-50 rounded-2xl">
+                                        <div class="flex items-center gap-2 md:gap-4">
+                                            <div
+                                                class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-black border">
+                                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                    width="32" height="32" fill="currentColor"
+                                                    viewBox="0 0 256 256">
+                                                    <path
+                                                        d="M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.5C39.74,56.83,78.26,17.15,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.64,71.64,0,0,0,27.64,56.3h0A32,32,0,0,1,96,186v6h24V147.31L90.34,117.66a8,8,0,0,1,11.32-11.32L128,132.69l26.34-26.35a8,8,0,0,1,11.32,11.32L136,147.31V192h24v-6a32.12,32.12,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <span class="font-bold text-gray-700 text-sm md:text-base">Hướng dẫn</span>
+                                        </div>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                    <form method="POST" action="{{ route('logout') }}" x-data>
+                                        @csrf
+                                        <x-dropdown-link href="{{ route('logout') }}"
+                                            @click.prevent="$root.submit();" class="!p-0 !hover:bg-none">
+                                            <div
+                                                class="flex items-center justify-between p-3 md:p-4 bg-red-100 hover:bg-red-200 transition-colors border-b border-gray-50 rounded-2xl text-red-500">
+                                                <div class="flex items-center gap-2 md:gap-4">
+                                                    <div
+                                                        class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-red-500 border">
+                                                        <svg class="w-6 h-6 fill-red-500"
+                                                            xmlns="http://www.w3.org/2000/svg" width="32"
+                                                            height="32" fill="currentColor" viewBox="0 0 256 256">
+                                                            <path
+                                                                d="M120,216a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H56V208h56A8,8,0,0,1,120,216Zm109.66-93.66-40-40a8,8,0,0,0-11.32,11.32L204.69,120H112a8,8,0,0,0,0,16h92.69l-26.35,26.34a8,8,0,0,0,11.32,11.32l40-40A8,8,0,0,0,229.66,122.34Z">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+                                                    <span
+                                                        class="font-bold text-red-500 text-sm md:text-base">{{ __('Đăng xuất') }}</span>
+                                                </div>
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path d="M9 5l7 7-7 7" />
+                                                </svg>
+
+                                            </div>
+                                        </x-dropdown-link>
+                                    </form>
                                 </div>
 
-                                <div class="pt-2 pb-10">
-                                    <h4 class="text-2xl font-black text-gray-900 mb-2 italic">Công cụ</h4>
-                                    <h4 class="text-2xl font-black text-gray-900 italic">Hướng dẫn</h4>
-                                </div>
                             </div>
                         </div>
-
-                        <!-- Account Management -->
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                            {{ __('Manage Account') }}
-                        </div>
-
-                        <x-dropdown-link href="{{ route('profile.show') }}">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                            <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                {{ __('API Tokens') }}
-                            </x-dropdown-link>
-                        @endif
-
-                        <div class="border-t border-gray-200"></div>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}" x-data>
-                            @csrf
-
-                            <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
                     </x-slot>
                 </x-dropdown>
             </div>

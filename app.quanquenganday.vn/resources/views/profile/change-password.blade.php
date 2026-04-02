@@ -1,34 +1,45 @@
 <x-app-layout>
 
-    <div class="md:py-12 container mx-auto min-h-screen">
-        <div class="bg-white overflow-hidden shadow-xl rounded-xl md:rounded-3xl p-4 md:p-6 max-w-screen-md mx-auto min-h-screen">
-            
+    <div class="md:py-12 container mx-auto md:min-h-[calc(100vh-65px)] flex items-center">
+        <div class="bg-white overflow-hidden shadow-xl rounded-xl md:rounded-3xl px-4 py-6 md:p-6 w-full max-w-screen-sm mx-auto h-full">            
             <div class="flex items-center justify-between gap-1 mb-3 md:mb-6">
                 <h2 class="font-bold text-gray-700 text-lg md:text-xl capitalize">Đổi mật khẩu</h2>
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
-                        d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                        d="M15 7a2 2 0 012 2m4 0a6 6 0. 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                 </svg>
             </div>
-            <x-validation-errors class="mb-4" />
+            @if ($errors->any())
+                <div class="mb-4"> {{-- Thay {{ $attributes }} bằng class CSS bình thường --}}
+                    <div class="font-medium text-red-600">
+                        {{ __('Rất tiếc! Đã có lỗi xảy ra.') }}
+                    </div>
+
+                    <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form method="POST" action="{{ route('user.password.update') }}">
                 @csrf
                 <input type="hidden" name="email" value="{{ auth()->user()->email }}">
                 <div>
                     <x-label for="current_password" value="{{ __('Mật khẩu hiện tại') }}" />
                     <x-input id="current_password" class="block mt-1 md:mt-2 md:py-3.5 w-full" type="password" name="current_password" required
-                        autocomplete="new-password" />
+                        autocomplete="off" />
                 </div>
                 <div class="mt-4">
                     <x-label for="password" value="{{ __('Mật khẩu') }}" />
                     <x-input id="password" class="block mt-1 md:mt-2 md:py-3.5 w-full" type="password" name="password" required
-                        autocomplete="new-password" />
+                        autocomplete="off" />
                 </div>
 
                 <div class="mt-4">
                     <x-label for="password_confirmation" value="{{ __('Xác nhận mật khẩu') }}" />
                     <x-input id="password_confirmation" class="block mt-1 md:mt-2 md:py-3.5 w-full" type="password"
-                        name="password_confirmation" required autocomplete="new-password" />
+                        name="password_confirmation" required autocomplete="off" />
                 </div>
 
                 <div class="flex items-center justify-center mt-4 md:mt-6">
