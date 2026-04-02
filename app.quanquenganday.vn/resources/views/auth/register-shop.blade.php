@@ -1,20 +1,6 @@
 <x-guest-layout>
     <div class="bg-gray-50 min-h-screen flex flex-col items-center justify-center p-5 md:p-8">
         <div class="max-w-xl md:max-w-2xl mx-auto ">
-            {{-- <div class="flex items-center p-4 bg-white border-b">
-            <a href="javascript:history.back()" class="p-2 bg-gray-100 rounded-full">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
-                    </path>
-                </svg>
-            </a>
-
-            <div class="ml-4">
-                <h1 class="text-lg font-bold">Form đăng ký quán</h1>
-                <p class="text-xs text-gray-500">Chủ quán điền thông tin từ link mời</p>
-            </div>
-        </div> --}}
-
             <div class="text-center mb-8">
                 <img src="{{ asset('logo.webp') }}" class="w-20 mx-auto">
             </div>

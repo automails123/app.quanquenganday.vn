@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Mail\OtpMail;
 use Illuminate\Support\Facades\Mail;
 
+use App\Http\Controllers\ProfileController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -61,6 +63,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 Route::middleware(['auth', 'role:sale'])->prefix('sale')->name('sale.')->group(function () {
     // Trang chủ Sale
     Route::get('/dashboard', [SaleDashboard::class, 'index'])->name('dashboard');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     
     // Quản lý đơn hàng (Resource sẽ tạo ra sale.orders.create, sale.orders.store...)
     // Nếu đã ở trong Group prefix('sale')
@@ -92,4 +95,19 @@ Route::get('/clear-all-cache', function() {
     Artisan::call('view:clear');
     Artisan::call('config:cache');
     return "Đã dọn dẹp sạch sẽ cache hệ thống!";
+});
+
+
+// Route::post('/user/update-password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])
+//      ->name('user.password.update');
+
+
+Route::middleware(['auth'])->group(function () {
+    // Route hiển thị Form (GET)
+    Route::get('/profile/change-password', [ProfileController::class, 'editPassword'])
+         ->name('password.change'); // Tên này phải khớp với trong Blade
+
+    // Route xử lý Lưu mật khẩu (POST/PUT)
+    Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])
+         ->name('user.password.update');
 });

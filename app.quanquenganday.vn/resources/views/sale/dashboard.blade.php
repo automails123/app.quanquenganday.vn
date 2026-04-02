@@ -3,7 +3,7 @@
 
     </x-slot>
     @php $res = auth()->user()->monthly_earnings; @endphp
-    <div class="py-12 container mx-auto max-md:px-4">
+    <div class="py-12 container mx-auto max-md:px-4 max-md:mb-10">
         <div class="flex justify-between items-start gap-2 md:gap-4 mb-4 md:mb-5 ">
             <div>
                 <h1 class="font-bold text-base md:text-2xl">Trang chủ</h1>
@@ -14,7 +14,6 @@
                 <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mt-1 tracking-normal">
                     {{ number_format($res['total']) }} <span class="font-normal">đ</span></h1>
             </div>
-
         </div>
         <div class="bg-white overflow-hidden shadow-xl rounded-2xl md:rounded-3xl p-3 md:p-6 lg:p-8">
             <div class="grid grid-cols-2 gap-4 lg:gap-7 mb-8">
@@ -40,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="mb-8">
+            <div class="">
                 <div class="flex justify-between items-center mb-3 md:mb-4">
                     <h3 class="text-lg font-bold text-gray-900">Top thu nhập</h3>
                     <span class="text-xs text-gray-400">Cập nhật theo tháng</span>
@@ -87,7 +86,7 @@
 
                                 </div>
                                 <div>
-                                    <p class="font-bold text-gray-900 text-sm md:text-lg capitalize">{{ $top->name }}</p>
+                                    <p class="font-bold text-gray-900 text-sm md:text-base capitalize">{{ $top->name }}</p>
                                     <p class="text-xs md:text-sm text-gray-500 mt-0.5">
                                         {{ $lbl }}
                                     </p>

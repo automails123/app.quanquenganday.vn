@@ -15,22 +15,69 @@ class OrderController extends Controller
     /**
      * Hiển thị danh sách đơn hàng của riêng Sale đó
      */
-    public function index()
+    public function index(Request $request, $status = null)
     {
-        $orders = Order::where('sale_id', auth()->id())
-            ->with('shop')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $defaultPrice = get_pos_setting('default_price', 1800000);
+        $user = auth()->user();
+        $userId = auth()->id();
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
 
-        // Thống kê nhanh cho màn hình "Quản lý đơn hàng"
-        $stats = [
-            'total_orders' => $orders->count(),
-            'pending_count' => $orders->where('status', 'pending')->count(),
-            'paid_count' => $orders->where('status', 'paid')->count(),
-            'total_commission_pending' => $orders->where('status', 'pending')->sum('commission'),
-        ];
+        // 1. Lấy danh sách ID của bản thân và tất cả cấp dưới (đệ quy)
+        // method getDescendantsIds() trong User Model, 
+        $allSaleIds = $user->getAllSubordinateIds();
 
-        return view('sale.orders.index', compact('orders', 'stats'));
+        // Tổng số đơn
+        $totalOrders = Order::where('sale_id', $userId)->whereMonth('created_at', $currentMonth)->count();
+        
+        // Đơn đang xử lý
+        $pendingOrders = Order::where('sale_id', $userId)->where('status', 'pending')->count();
+        
+        // Đơn đã thanh toán
+        $paidOrders = Order::where('sale_id', $userId)->where('status', 'paid')->count();
+        
+        // Doanh số (1.8tr x tổng đơn)
+        $totalRevenue = $totalOrders * 1800000;
+
+        // Hoa hồng dự kiến (Áp dụng logic KPI bạn vừa yêu cầu)
+        $earnings = auth()->user()->monthly_earnings; 
+        $expectedCommission = $earnings['total'];
+
+
+        $status = $request->get('status');
+        $query = Order::whereIn('sale_id', $allSaleIds)
+        ->whereMonth('created_at', $currentMonth)
+        ->whereYear('created_at', $currentYear);
+
+    if ($status) {
+        $query->where('status', $status);
+    }
+        // if ($status) {
+        // // Nếu CÓ bấm nút lọc (có status) thì mới lấy dữ liệu từ DB
+        // $orders = Order::where('sale_id', $userId)
+        //     ->where('status', $status)
+        //     ->whereMonth('created_at', $currentMonth)
+        //     ->whereYear('created_at', $currentYear)
+        //     ->latest()
+        //     ->get();
+        // } else {
+        //     // Nếu KHÔNG có status (mới vào trang) thì trả về mảng rỗng
+        //     $orders = collect([]); 
+        // }
+
+        // Trả về cho Fetch (AJAX)
+        // if ($request->ajax()) {
+        //     return view('sale.orders.partials.list', compact('orders'))->render();
+        // }
+$orders = $query->with('user')->latest()->get();
+
+    if ($request->ajax()) {
+        return view('sale.orders.partials.list', compact('orders','defaultPrice',))->render();
+    }
+        return view('sale.orders.index', compact(
+            'totalOrders', 'pendingOrders', 'paidOrders', 'totalRevenue', 'expectedCommission',
+            'orders', 
+        ));
     }
 
     /**

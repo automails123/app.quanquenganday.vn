@@ -111,21 +111,35 @@ class User extends Authenticatable
         $directRate = (float) get_pos_setting('commission_rate', 15) / 100;
         
         // Lấy đơn hàng ĐÃ THANH TOÁN trong tháng này của bản thân
-        $myOrders = $this->hasMany(Order::class, 'sale_id')
-            ->where('status', 'paid')
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->get();
-        
-        $myCount = $myOrders->count();
+        // $myOrders = $this->hasMany(Order::class, 'sale_id')
+        //     ->where('status', 'paid')
+        //     ->whereMonth('created_at', now()->month)
+        //     ->whereYear('created_at', now()->year)
+        //     ->get();        
+        // $myCount = $myOrders->count();
+
+        $myCount = $this->orders()
+        ->where('status', 'paid')
+        ->whereMonth('created_at', now()->month)
+        ->whereYear('created_at', now()->year)
+        ->count();
 
         // 1. Hoa hồng trực tiếp (270k x số máy)
         $direct = $myCount * ($price * $directRate);
 
         // 2. Thưởng KPI cá nhân
+        $kpi_bo_2 = floor($myCount / 2) * 100000;    
+        // Cứ mỗi bộ 3 máy thưởng 300k
+        $kpi_bo_3 = floor($myCount / 3) * 300000;
+
         $kpi = 0;
-        if ($myCount >= 3) $kpi = 300000;
-        elseif ($myCount >= 2) $kpi = 100000;
+        if ($myCount >= 3) {
+        // Từ 3 máy trở lên: 100k x tổng số máy
+            $kpi = $myCount * 100000;
+        } elseif ($myCount == 2) {
+            // Đúng 2 máy: thưởng cứng 100k
+            $kpi = 100000;
+    }
 
         // 3. Hoa hồng cân bằng (Team F1) - 100k/máy F1 nếu mình có bán
         $teamBalanced = 0;
@@ -181,4 +195,16 @@ class User extends Authenticatable
             'f1_count' => $f1TotalOrdersCount
         ];
     }
+    public function getAllSubordinateIds()
+    {
+        $ids = [$this->id];
+        foreach ($this->f1s as $f1) {
+            $ids = array_merge($ids, $f1->getAllSubordinateIds());
+        }
+        return $ids;
+    }
+    public function area()
+{
+    return $this->belongsTo(Area::class, 'area_id');
+}
 }
