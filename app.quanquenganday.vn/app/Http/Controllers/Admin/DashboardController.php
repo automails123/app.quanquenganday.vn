@@ -38,10 +38,35 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        //tạm thời hiện setting để cấu hình 
-        $settings = Setting::all()->pluck('value', 'key')->toArray();      
+        
+        $totalUser = User::count();
+        $activeUser = User::where('status', 'active')->count();
 
-        return view('admin.settings', compact('settings'));
+        // // 2. Thống kê Quán
+        $totalShop = Shop::count();
+        $activeShop = Shop::where('status', 'paid')->count();
+
+        // // 3. Đơn chờ duyệt (Các quán có status là pending)
+        $pendingShops = Order::where('status', 'pending')->count();
+
+        // 4. Tổng hoa hồng (Giả sử tính tổng cột pos_price hoặc từ bảng commissions)
+        // Ở đây mình lấy ví dụ tổng tiền POS của các quán đã active chia % hoa hồng
+        $totalCommission = Shop::where('status', 'paid')->sum('pos_price'); 
+        // Giả sử quỹ hoa hồng là 10% tổng doanh thu POS
+        $commissionFund = ($totalCommission * 10) / 100;
+
+        return view('admin.dashboard', compact(
+            'totalUser', 
+            'activeUser', 
+            'totalShop', 
+            'activeShop', 
+            'pendingShops', 
+            'commissionFund'
+        ));
+            //tạm thời hiện setting để cấu hình 
+        $settings = Setting::all()->pluck('value', 'key')->toArray();    
+
+        // return view('admin.settings', compact('settings'));
         //<a href="{{ route('admin.settings.index') }}">Cấu hình hệ thống</a>
     }
 }

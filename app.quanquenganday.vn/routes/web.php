@@ -57,11 +57,6 @@ Route::get('/register-shop/success', function () {
 })->name('register.shop.success');
 
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
-    // Thêm các route duyệt đơn, duyệt quán ở đây...
-});
-
 // Nhóm Route cho SALE
 Route::middleware(['auth', 'role:sale'])->prefix('sale')->name('sale.')->group(function () {
     // Trang chủ Sale
