@@ -133,5 +133,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
+Route::get('/tools', function () {
+    return view('tools.index');
+})->name('tools.index');
 

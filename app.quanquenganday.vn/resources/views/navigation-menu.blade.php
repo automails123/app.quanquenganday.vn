@@ -4,7 +4,7 @@
         <div class="flex justify-between items-center h-16 max-md:px-0.5 max-md:shadow-xl">
             <!-- Navigation Links -->
             <x-nav-link class="gap-1 md:gap-2 max-md:flex-col max-md:items-center max-md:flex-1 max-md:text-xs"
-                href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                href="{{ auth()->user()->role === 'sale' ? route('sale.dashboard') : route('dashboard') }}" :active="request()->routeIs('sale.dashboard') || request()->routeIs('dashboard')">
                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentcolor"
                     viewBox="0 0 256 256">
                     <path
@@ -213,36 +213,46 @@
             <div class="relative max-md:flex-1">
                 <x-dropdown align="right" width="100">
                     <x-slot name="trigger">
-                        @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                        {{-- @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                             <button
                                 class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition max-md:w-full">
                                 <img class="size-8 rounded-full object-cover"
                                     src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                             </button>
-                        @else
-                            <button type="button"
-                                class="max-md:w-full inline-flex max-md:flex-col max-md:items-center gap-1 md:gap-1 border-transparent max-md:text-xs text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
-                                    height="32" fill="currentColor" viewBox="0 0 256 256">
-                                    <path
-                                        d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z">
-                                    </path>
-                                </svg>
-                                {{ __('Cá nhân') }}
+                        @else --}}
+                        <button type="button"
+                            class="max-md:w-full inline-flex max-md:flex-col max-md:items-center gap-1 md:gap-1 border-transparent max-md:text-xs text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                fill="currentColor" viewBox="0 0 256 256">
+                                <path
+                                    d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z">
+                                </path>
+                            </svg>
+                            {{ __('Cá nhân') }}
 
-                            </button>
-                        @endif
+                        </button>
+                        {{-- @endif --}}
                     </x-slot>
 
                     <x-slot name="content">
                         <div class="">
                             <div class="bg-white px-4 pb-4 pt-3 md:px-5 md:pb-5 md:pt-4 shadow-xl mb-6">
                                 <div class="flex items-center gap-4">
-                                    <div class="relative">
-                                        <div
-                                            class="w-20 h-20 bg-black rounded-3xl flex items-center justify-center text-white text-3xl font-bold">
-                                            {{ substr(auth()->user()->name, 0, 1) }}
-                                        </div>
+                                    <div class="relative">                                        
+                                        @if (auth()->user()->profile_photo_path)
+                                            <div
+                                                class="w-20 h-20 bg-gray-100 rounded-3xl overflow-hidden shadow-sm border border-gray-100">
+                                                <img src="{{ auth()->user()->profile_photo_url }}"
+                                                    alt="{{ auth()->user()->name }}"
+                                                    class="w-full h-full object-cover">
+                                            </div>
+                                        @else
+                                            {{-- Nếu không có ảnh, hiện chữ cái đầu tiên như cũ --}}
+                                            <div
+                                                class="w-20 h-20 bg-black rounded-3xl flex items-center justify-center text-white text-3xl font-bold">
+                                                {{ substr(auth()->user()->name, 0, 1) }}
+                                            </div>
+                                        @endif
                                         <button
                                             class="absolute -bottom-1 -right-1 bg-white p-1.5 rounded-full shadow-md border border-gray-100">
                                             <svg class="h-4 w-4 text-gray-600" xmlns="http://www.w3.org/2000/svg"
@@ -376,7 +386,7 @@
                                             <path d="M9 5l7 7-7 7" />
                                         </svg>
                                     </a>
-                                    <a href="{{ route('password.change') }}"
+                                    <a href="{{ route('tools.index') }}"
                                         class="flex items-center justify-between p-3 md:p-4 bg-gray-100 hover:bg-gray-200 transition-colors border-b border-gray-50 rounded-2xl">
                                         <div class="flex items-center gap-2 md:gap-4">
                                             <div

@@ -15,8 +15,8 @@
                     </svg>
                 </a>
                 <div class="ml-4">
-                    <h1 class="text-xl font-bold text-gray-900">Quản lý đơn hàng</h1>
-                    <p class="text-xs text-gray-500 font-medium">Theo dõi các đơn hàng do sale tạo</p>
+                    <h1 class="text-xl md:text-2xl font-bold text-gray-900">Quản lý đơn hàng</h1>
+                    <p class="text-xs md:text-sm text-gray-500 font-medium">Theo dõi các đơn hàng do sale tạo</p>
                 </div>
             </div>
 

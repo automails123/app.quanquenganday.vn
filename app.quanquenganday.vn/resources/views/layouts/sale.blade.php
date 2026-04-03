@@ -12,6 +12,7 @@
 
         <!-- Styles -->
         @livewireStyles
+        
     </head>
     <body class="font-sans antialiased">
         <x-banner />
@@ -20,11 +21,10 @@
             @livewire('navigation-menu')
         
             <main>
-                {{-- {{ $slot }} --}}                
+                {{ $slot }}                
             </main>
         </div>
         @stack('modals')
-
         @livewireScripts
     </body>
 </html>

@@ -1,15 +1,15 @@
 <x-action-section>
     <x-slot name="title">
-        {{ __('Browser Sessions') }}
+        {{ __('Các thiết bị đang đăng nhập') }}
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Manage and log out your active sessions on other browsers and devices.') }}
+        {{ __('Quản lý và đăng xuất các phiên đang hoạt động trên các trình duyệt và thiết bị khác.') }}
     </x-slot>
 
     <x-slot name="content">
         <div class="max-w-xl text-sm text-gray-600">
-            {{ __('If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.') }}
+            {{ __('Nếu cần thiết, bạn có thể đăng xuất khỏi tất cả các phiên trình duyệt khác trên mọi thiết bị của mình. Danh sách dưới đây hiển thị một số phiên hoạt động gần đây; tuy nhiên, danh sách này có thể không đầy đủ. Nếu bạn cảm thấy tài khoản của mình đang bị xâm nhập, bạn cũng nên cập nhật lại mật khẩu.') }}
         </div>
 
         @if (count($this->sessions) > 0)
@@ -53,7 +53,7 @@
 
         <div class="flex items-center mt-5">
             <x-button wire:click="confirmLogout" wire:loading.attr="disabled">
-                {{ __('Log Out Other Browser Sessions') }}
+                {{ __('Đăng xuất khỏi các thiết bị khác') }}
             </x-button>
 
             <x-action-message class="ms-3" on="loggedOut">
@@ -64,16 +64,16 @@
         <!-- Log Out Other Devices Confirmation Modal -->
         <x-dialog-modal wire:model.live="confirmingLogout">
             <x-slot name="title">
-                {{ __('Log Out Other Browser Sessions') }}
+                {{ __('Đăng xuất khỏi các thiết bị khác') }}
             </x-slot>
 
             <x-slot name="content">
-                {{ __('Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices.') }}
+                {{ __('Vui lòng nhập mật khẩu để xác nhận rằng bạn muốn đăng xuất khỏi các phiên trình duyệt khác trên tất cả các thiết bị của mình.') }}
 
                 <div class="mt-4" x-data="{}" x-on:confirming-logout-other-browser-sessions.window="setTimeout(() => $refs.password.focus(), 250)">
                     <x-input type="password" class="mt-1 block w-3/4"
                                 autocomplete="current-password"
-                                placeholder="{{ __('Password') }}"
+                                placeholder="{{ __('Mật khẩu') }}"
                                 x-ref="password"
                                 wire:model="password"
                                 wire:keydown.enter="logoutOtherBrowserSessions" />
@@ -90,7 +90,7 @@
                 <x-button class="ms-3"
                             wire:click="logoutOtherBrowserSessions"
                             wire:loading.attr="disabled">
-                    {{ __('Log Out Other Browser Sessions') }}
+                    {{ __('Đăng xuất khỏi các thiết bị khác') }}
                 </x-button>
             </x-slot>
         </x-dialog-modal>

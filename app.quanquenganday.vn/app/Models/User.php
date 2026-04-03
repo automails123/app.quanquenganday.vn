@@ -42,6 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'cccd_front_image',
         'cccd_back_image',
         'cccd_status',
+        'tax_code',
     ];
     protected static function booted()
 {

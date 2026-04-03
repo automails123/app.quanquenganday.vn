@@ -6,14 +6,13 @@
     </x-slot>
 
     <div>
-        <div class="container mx-auto">
+        <div class="container mx-auto py-5 md:py-12 md:px-5">
             @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                 @livewire('profile.update-profile-information-form')
 
                 <x-section-border />
             @endif
-
-            @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
+            @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()) && auth()->user()->role === 'admin')
                 <div class="mt-10 sm:mt-0">
                     @livewire('profile.update-password-form')
                 </div>
@@ -21,25 +20,26 @@
                 <x-section-border />
             @endif
 
-            @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+            {{-- bật lên để tạo mã authen --}}
+            {{-- @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
                 <div class="mt-10 sm:mt-0">
                     @livewire('profile.two-factor-authentication-form')
                 </div>
 
                 <x-section-border />
-            @endif
+            @endif --}}
 
-            <div class="mt-10 sm:mt-0">
+            {{-- <div class="mt-10 sm:mt-0">
                 @livewire('profile.logout-other-browser-sessions-form')
-            </div>
+            </div> --}}
 
-            @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
+            {{-- @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
                 <x-section-border />
 
                 <div class="mt-10 sm:mt-0">
                     @livewire('profile.delete-user-form')
                 </div>
-            @endif
+            @endif --}}
         </div>
     </div>
 </x-app-layout>
