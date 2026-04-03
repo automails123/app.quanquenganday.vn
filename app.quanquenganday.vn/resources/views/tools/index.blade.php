@@ -24,7 +24,7 @@
     <x-slot name="header">
     </x-slot>
 
-    <div class="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-5 md:p-8" x-data="{
+    <div class="flex md:flex-col md:items-center justify-center min-h-screen bg-gray-50 md:p-8" x-data="{
         openQR: false,
         qrContent: '',
         {{-- Dùng chung 1 biến để chứa nội dung SVG --}}
@@ -44,18 +44,32 @@
             navigator.clipboard.writeText(text).then(() => {
                 alert(message);
             });
+        },
+        shareLink(title, url) {
+            if (navigator.share) {
+                navigator.share({
+                        title: title,
+                        text: 'Mời bạn tham gia hệ thống Quán Quen Gần Đây:',
+                        url: url,
+                    })
+                    .then(() => console.log('Chia sẻ thành công'))
+                    .catch((error) => console.log('Hủy chia sẻ', error));
+            } else {
+                // Fallback: Nếu máy tính không có Share API thì tự động Copy link
+                this.copyToClipboard(url, 'Trình duyệt không hỗ trợ chia sẻ nhanh. Đã copy link mời!');
+            }
         }
     }">
         <div
-            class="w-full md:max-w-screen-md mx-auto bg-white rounded-2xl md:rounded-3xl shadow-xl md:p-8 border border-gray-100 space-y-6">
+            class="w-full md:max-w-screen-md mx-auto bg-white  md:rounded-3xl shadow-xl p-4 pb-20 md:p-8 border border-gray-100 space-y-6">
             <h2 class="text-xl font-bold text-gray-800 flex items-center justify-between">
                 Công cụ lấy link mời
                 <span class="text-xs font-normal text-gray-400">2 loại link</span>
             </h2>
 
-            <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100 space-y-4">
+            <div class="bg-gray-50 p-4 md:p-6 rounded-3xl border border-gray-100 space-y-4">
                 <div>
-                    <div class="flex items-start gap-4">
+                    <div class="flex items-start gap-3 md:gap-4">
                         <div
                             class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center border shadow-sm text-black">
                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -65,19 +79,19 @@
                                 </path>
                             </svg>
                         </div>
-                        <div class="flex-1">
+                        <div class="flex-1 max-md:mb-3">
                             <h3 class="font-bold text-gray-800">Link mời sale</h3>
                             <p class="text-xs text-gray-500 leading-relaxed">Dùng để tuyển sale/CTV mới vào hệ thống.
                             </p>
                         </div>
                     </div>
-                    <div class="bg-white p-3 rounded-xl border break-all text-gray-600 text-sm font-semibold md:ms-16">
+                    <div class="bg-white p-3 rounded-xl border break-all text-gray-600 text-xs md:text-sm font-semibold md:ms-16">
                         {{ $saleLink }}
                     </div>
                 </div>
                 <div class="grid grid-cols-3 gap-2 md:gap-5 lg:gap-8">
                     <button @click="copyToClipboard('{{ $saleLink }}', 'Đã copy link mời Sale!')"
-                        class="flex items-center justify-center gap-2 py-3 bg-gray-100 rounded-2xl text-sm font-bold text-gray-700 hover:bg-gray-200 transition">
+                        class="flex items-center justify-center gap-1 md:gap-2 py-3 bg-gray-100 rounded-2xl text-xs md:text-sm font-bold text-gray-700 hover:bg-gray-200 transition">
                         <svg class="w-4 h-4 md:w-5 md:h-5" xmlns="http://www.w3.org/2000/svg" width="32"
                             height="32" fill="currentColor" viewBox="0 0 256 256">
                             <path
@@ -87,7 +101,7 @@
                         Copy
                     </button>
                     <button @click="qrContent = `{{ $svgSale }}`; qrTitle = 'Mã QR mời Sale'; openQR = true;"
-                        class="flex items-center justify-center gap-2 py-3 bg-gray-100 rounded-2xl text-sm font-bold text-gray-700 hover:bg-gray-200 transition">
+                        class="flex items-center justify-center gap-1 md:gap-2 py-3 bg-gray-100 rounded-2xl text-xs md:text-sm font-bold text-gray-700 hover:bg-gray-200 transition">
                         <svg class="w-4 h-4 md:w-5 md:h-5" xmlns="http://www.w3.org/2000/svg" width="32"
                             height="32" fill="currentColor" viewBox="0 0 256 256">
                             <path
@@ -96,20 +110,18 @@
                         </svg>
                         QR code
                     </button>
-                    {{-- <button
-                        class="flex items-center justify-center gap-2 py-3 bg-black rounded-2xl text-sm font-bold text-white hover:bg-gray-800 transition">
+                    <button @click="shareLink('Mời làm Sale', '{{ $saleLink }}')"
+                        class="flex items-center justify-center gap-1 md:gap-2 py-3 bg-black rounded-2xl text-xs md:text-sm font-bold text-white hover:bg-gray-800 transition shadow-lg active:scale-95">
                         <svg class="w-4 h-4 md:w-5 md:h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M227.32,28.68a16,16,0,0,0-15.66-4.08l-.15,0L19.57,82.84a16,16,0,0,0-2.49,29.8L102,154l41.3,84.87A15.86,15.86,0,0,0,157.74,248q.69,0,1.38-.06a15.88,15.88,0,0,0,14-11.51l58.2-191.94c0-.05,0-.1,0-.15A16,16,0,0,0,227.32,28.68ZM157.83,231.85l-.05.14,0-.07-40.06-82.3,48-48a8,8,0,0,0-11.31-11.31l-48,48L24.08,98.25l-.07,0,.14,0L216,40Z"></path></svg>
                         Gửi ngay
-                    </button> --}}
-
-                    {{-- @livewire('send-affiliate-link', ['link' => $saleLink, 'type' => 'Sale']) --}}
-                    <livewire:send-affiliate-link :link="$saleLink" :type="'Sale'" :wire:key="'send-link-sale'" />
+                    </button>
+                    {{-- <livewire:send-affiliate-link :link="$saleLink" :type="'Sale'" :wire:key="'send-link-sale'" /> --}}
                 </div>
             </div>
 
-            <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100 space-y-4">
+            <div class="bg-gray-50 p-4 md:p-6 rounded-3xl border border-gray-100 space-y-4">
                 <div>
-                    <div class="flex items-start gap-4">
+                    <div class="flex items-start gap-3 md:gap-4">
                         <div
                             class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center border shadow-sm text-gray-600">
                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -119,21 +131,21 @@
                                 </path>
                             </svg>
                         </div>
-                        <div class="flex-1">
+                        <div class="flex-1 max-md:mb-3">
                             <h3 class="font-bold text-gray-800">Link mời quán</h3>
                             <p class="text-xs text-gray-500 leading-relaxed">Dùng để chủ quán đăng ký vào đúng tài khoản
                                 sale của bạn.</p>
                         </div>
                     </div>
 
-                    <div class="bg-white p-3 rounded-xl border break-all text-gray-600 text-sm font-semibold md:ms-16">
+                    <div class="bg-white p-3 rounded-xl border break-all text-gray-600 text-xs md:text-sm font-semibold md:ms-16">
                         {{ $shopLink }}
                     </div>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2 md:gap-5 lg:gap-8">
                     <button @click="copyToClipboard('{{ $shopLink }}', 'Đã copy link mời Quán!')"
-                        class="flex items-center justify-center gap-2 py-3 bg-gray-100 rounded-2xl text-sm font-bold text-gray-700 hover:bg-gray-200 transition">
+                        class="flex items-center justify-center gap-1 md:gap-2 py-3 bg-gray-100 rounded-2xl text-xs md:text-sm font-bold text-gray-700 hover:bg-gray-200 transition">
                         <svg class="w-4 h-4 md:w-5 md:h-5" xmlns="http://www.w3.org/2000/svg" width="32"
                             height="32" fill="currentColor" viewBox="0 0 256 256">
                             <path
@@ -143,7 +155,7 @@
                         Copy
                     </button>
                     <button @click="qrContent = `{{ $svgShop }}`; qrTitle = 'Mã QR mời Quán'; openQR = true;"
-                        class="flex items-center justify-center gap-2 py-3 bg-gray-100 rounded-2xl text-sm font-bold text-gray-700 hover:bg-gray-200 transition">
+                        class="flex items-center justify-center gap-1 md:gap-2 py-3 bg-gray-100 rounded-2xl text-xs md:text-sm font-bold text-gray-700 hover:bg-gray-200 transition">
                         <svg class="w-4 h-4 md:w-5 md:h-5" xmlns="http://www.w3.org/2000/svg" width="32"
                             height="32" fill="currentColor" viewBox="0 0 256 256">
                             <path
@@ -152,10 +164,16 @@
                         </svg>
                         QR code
                     </button>
+                    <button @click="shareLink('Mời chủ Quán', '{{ $shopLink }}')"
+                        class="flex items-center justify-center gap-1 md:gap-2 py-3 bg-black rounded-2xl text-xs md:text-sm font-bold text-white hover:bg-gray-800 transition shadow-lg active:scale-95">
+                            <svg class="w-4 h-4 md:w-5 md:h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M227.32,28.68a16,16,0,0,0-15.66-4.08l-.15,0L19.57,82.84a16,16,0,0,0-2.49,29.8L102,154l41.3,84.87A15.86,15.86,0,0,0,157.74,248q.69,0,1.38-.06a15.88,15.88,0,0,0,14-11.51l58.2-191.94c0-.05,0-.1,0-.15A16,16,0,0,0,227.32,28.68ZM157.83,231.85l-.05.14,0-.07-40.06-82.3,48-48a8,8,0,0,0-11.31-11.31l-48,48L24.08,98.25l-.07,0,.14,0L216,40Z"></path></svg>
+                        Gửi ngay
+                    </button>
 
-                    <livewire:send-affiliate-link :link="$shopLink" :type="'Quán'" :wire:key="'btn-shop'" />
+                    {{-- <livewire:send-affiliate-link :link="$shopLink" :type="'Quán'" :wire:key="'btn-shop'" /> --}}
                 </div>
             </div>
+
 
             <div x-show="openQR" x-cloak
                 class="fixed inset-0 z-[99] flex items-center justify-center bg-black/60 backdrop-blur-sm">
@@ -165,7 +183,7 @@
 
                     <div class="bg-gray-50 p-4 rounded-2xl border mb-4 flex justify-center items-center"
                         x-html="qrContent">
-                    </div>                    
+                    </div>
                     <button @click="openQR = false" class="w-full py-4 bg-black text-white rounded-2xl font-bold">
                         Đóng lại
                     </button>

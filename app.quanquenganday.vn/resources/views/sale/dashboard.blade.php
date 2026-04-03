@@ -3,7 +3,7 @@
 
     </x-slot>
     @php $res = auth()->user()->monthly_earnings; @endphp
-    <div class="py-12 container mx-auto max-md:px-4 max-md:mb-10">
+    <div class="pb-12 pt-5 md:py-12 container mx-auto max-md:px-4 max-md:mb-10">
         <div class="flex justify-between items-start gap-2 md:gap-4 mb-4 md:mb-5 ">
             <div>
                 <h1 class="font-bold text-base md:text-2xl">Trang chủ</h1>
@@ -17,10 +17,10 @@
         </div>
         <div class="bg-white overflow-hidden shadow-xl rounded-2xl md:rounded-3xl p-3 md:p-6 lg:p-8">
             <div class="grid grid-cols-2 gap-4 lg:gap-7 mb-8">
-                <div class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-[2rem] border border-gray-100 text-center">
+                <a href="{{ route('sale.shops.index') }}" class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-[2rem] border border-gray-100 text-center no-underline">
                     <p class="text-lg md:text-xl font-bold text-gray-900 mb-1">{{ $countShops }}</p>
                     <p class="text-gray-500 text-xs md:text-base font-semibold">Tổng quán đã mời</p>
-                </div>
+                </a>
 
                 <div class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-[2rem] border border-gray-100 text-center">
                     <p class="text-lg md:text-xl font-bold text-gray-900 mb-1">{{ $countSalesF1 }}</p>

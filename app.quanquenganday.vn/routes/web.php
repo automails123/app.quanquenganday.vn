@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Sale\DashboardController as SaleDashboard;
 use App\Http\Controllers\Sale\OrderController;
+use App\Http\Controllers\Sale\ShopController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Mail\OtpMail;
 use Illuminate\Support\Facades\Mail;
@@ -130,6 +131,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/verify-otp', [OTPController::class, 'verifyOtp'])->name('otp.verify');
 
     Route::post('/verify-cccd/upload', [CCCDController::class, 'upload'])->name('cccd.upload');
+    Route::get('/invited-shops', [ShopController::class, 'index'])->name('sale.shops.index');
+    // Route xem chi tiết quán
+    Route::get('/invited-shops/{id}', [ShopController::class, 'show'])->name('sale.shops.show');
 });
 
 

@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            <div class="mb-4">
+            <div class="mb-6 md:mb-4">
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <h3 class="text-lg font-black text-gray-900">Bộ lọc trạng thái</h3>

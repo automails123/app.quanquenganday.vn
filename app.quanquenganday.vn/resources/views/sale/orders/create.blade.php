@@ -4,7 +4,7 @@
     </x-slot> --}}
 
     <div class="md:py-12 container mx-auto max-md:mb-10 min-h-screen">
-        <div class="bg-white overflow-hidden shadow-xl round-2xl md:rounded-2xl p-4 md:p-5 lg:p-7">
+        <div class="bg-white overflow-hidden shadow-xl round-2xl md:rounded-2xl pt-4 pb-12 px-4 md:p-5 lg:p-7 ">
             <div class="flex items-start mb-4 md:mb-6">
                 <a href="javascript:history.back()"
                     class="p-1 bg-gray-100 border rounded-full flex-shrink-0 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 hover:opacity-75">

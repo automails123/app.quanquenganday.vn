@@ -1,10 +1,12 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 max-md:fixed max-md:bottom-0 w-full">
+<nav x-data="{ open: false }" class="bg-white md:border-b md:border-b-gray-100 max-md:fixed max-md:bottom-0 w-full">
     <!-- Primary Navigation Menu -->
     <div class="container mx-auto">
-        <div class="flex justify-between items-center h-16 max-md:px-0.5 max-md:shadow-xl">
+        <div
+            class="flex justify-between items-center h-16 max-md:px-0.5 max-md:shadow-xl max-md:border max-md:border-gray-100">
             <!-- Navigation Links -->
             <x-nav-link class="gap-1 md:gap-2 max-md:flex-col max-md:items-center max-md:flex-1 max-md:text-xs"
-                href="{{ auth()->user()->role === 'sale' ? route('sale.dashboard') : route('dashboard') }}" :active="request()->routeIs('sale.dashboard') || request()->routeIs('dashboard')">
+                href="{{ auth()->user()->role === 'sale' ? route('sale.dashboard') : route('dashboard') }}"
+                :active="request()->routeIs('sale.dashboard') || request()->routeIs('dashboard')">
                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentcolor"
                     viewBox="0 0 256 256">
                     <path
@@ -13,10 +15,11 @@
                 </svg> {{ __('Home') }}
             </x-nav-link>
             <div class="relative max-md:flex-1">
-                <x-dropdown align="right" width="100">
+                <x-dropdown align="right" width="100" dropdownClasses="max-md:top-0 max-md:bottom-16 max-md:w-full"
+                    contentClasses="max-md:h-full max-md:h-[calc(100vh-75px)] bg-white overflow-hidden">
                     <x-slot name="trigger">
                         <span
-                            class="inline-flex items-center gap-1 md:gap-1 cursor-pointer text-gray-500 max-md:flex-col max-md:items-center max-md:text-xs">
+                            class="inline-flex items-center gap-1 md:gap-1 cursor-pointer text-gray-500 max-md:flex-col max-md:items-center text-sm max-md:text-xs">
                             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                                 fill="currentColor" viewBox="0 0 256 256">
                                 <path
@@ -28,8 +31,8 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <div class=" max-w-sm px-4 py-2 md:py-4 w-full">
-                            <div class="flex items-center justify-between gap-2 md:gap-4">
+                        <div class="max-w-sm py-4 w-full">
+                            <div class="flex items-center justify-between gap-2 md:gap-4 px-4">
                                 <div class="inline-flex items-center gap-2">
                                     <span
                                         class="flex-shrink-0 rounded-full border bg-white text-black w-8 h-8 inline-flex items-center justify-center">
@@ -59,7 +62,7 @@
                                     </span>
                                 </span>
                             </div>
-                            <div class="pb-2 pt-3 md:pt-4 flex flex-col gap-4">
+                            <div class="pb-2 pt-3 md:pt-4 px-4 flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-90px)] md:max-h-[485px]">
                                 <div class="rounded-2xl bg-black p-3 flex">
                                     <div class="flex gap-1 md:gap-2">
                                         <span
@@ -122,6 +125,8 @@
                                     </div>
                                     <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
                                 </div>
+                               
+                                
                             </div>
 
                         </div>
@@ -129,11 +134,11 @@
                 </x-dropdown>
             </div>
             <x-nav-link title="Tạo đơn hàng"
-                class="gap-1 md:gap-1 max-md:flex-col max-md:items-center max-md:flex-1 max-md:text-xs relative max-md:h-full"
+                class="gap-1 md:gap-1 max-md:flex-col max-md:items-center max-md:flex-1 max-md:text-xs relative max-md:h-full max-md:z-[60]"
                 href="{{ route('sale.orders.create') }}">
                 <span
                     class="bg-black text-white rounded-full min-w-14 min-h-14 md:min-w-12 md:min-h-12 flex items-center justify-center shadow-lg max-md:absolute max-md:-top-2">
-                    <svg class="w-8 h-8 md:w-5 md:h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                    <svg class="w-8 h-8 md:w-5 md:h-5 lg:w-7 lg:h-7" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                         fill="currentColor" viewBox="0 0 256 256">
                         <path
                             d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z">
@@ -211,7 +216,9 @@
 
             <!-- Settings Dropdown -->
             <div class="relative max-md:flex-1">
-                <x-dropdown align="right" width="100">
+                <x-dropdown align="right" width="100"
+                    dropdownClasses="max-md:top-0 max-md:bottom-16 max-md:w-full"
+                    contentClasses="max-md:h-full max-md:h-[calc(100vh-75px)] bg-white overflow-hidden">
                     <x-slot name="trigger">
                         {{-- @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                             <button
@@ -236,9 +243,10 @@
 
                     <x-slot name="content">
                         <div class="">
-                            <div class="bg-white px-4 pb-4 pt-3 md:px-5 md:pb-5 md:pt-4 shadow-xl mb-6">
+                            <div
+                                class="bg-white px-4 pb-4 pt-3 md:px-5 md:pb-5 md:pt-4 shadow-sm md:shadow-xl mb-4 md:mb-6">
                                 <div class="flex items-center gap-4">
-                                    <div class="relative">                                        
+                                    <div class="relative">
                                         @if (auth()->user()->profile_photo_path)
                                             <div
                                                 class="w-20 h-20 bg-gray-100 rounded-3xl overflow-hidden shadow-sm border border-gray-100">
@@ -305,7 +313,8 @@
                                 </div>
                             </div>
 
-                            <div class="px-6 pb-4 space-y-4 overflow-y-auto max-h-screen">
+                            <div
+                                class="px-6 pb-4 space-y-4 overflow-y-auto max-h-[calc(100vh-220px)] md:max-h-[485px]">
                                 <h3 class="text-lg font-black text-gray-900 mb-2">Cài đặt cá nhân</h3>
 
                                 <div class="bg-white space-y-4 ">

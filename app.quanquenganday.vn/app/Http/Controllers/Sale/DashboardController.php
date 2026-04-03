@@ -35,7 +35,7 @@ class DashboardController extends Controller
 
         // 4. Số lượng quán đang hoạt động (Dữ liệu cho ô "36 Quán active")
         $activeShops = Shop::where('sale_id', $user->id)
-            ->where('status', 'active')
+            ->where('status', 'paid')
             ->count();
 
             // Tính tổng hoa hồng + kpi đã được duyệt (paid) trong tháng
