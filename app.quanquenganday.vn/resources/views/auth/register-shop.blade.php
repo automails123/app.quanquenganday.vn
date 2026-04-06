@@ -1,4 +1,8 @@
 <x-guest-layout>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
+    @vite(['resources/css/custom.css', 'resources/js/app.js'])
+   
     <div class="bg-gray-50 min-h-screen flex flex-col items-center justify-center p-5 md:p-8">
         <div class="max-w-xl md:max-w-2xl mx-auto ">
             <div class="text-center mb-8">
@@ -157,7 +161,7 @@
                                     class="text-red-500">*</span></label>
 
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <span class="absolute z-[1] inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                                     <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -166,9 +170,7 @@
                                             d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                     </svg>
                                 </span>
-                                <input required type="text" name="ward" value="{{ old('ward') }}"
-                                    placeholder="Nhập phường/xã" required
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-2xl">
+                                <select id="ward_select" name="ward" class="mt-1 w-full pl-10 pr-4 py-3 border border-gray-200 rounded-2xl" required></select>
                             </div>
                         </div>
                         <div>
@@ -184,9 +186,14 @@
                                             d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                     </svg>
                                 </span>
-                                <input required type="text" name="city" value="{{ old('city') }}"
+                                {{-- <input required type="text" name="city" value="{{ old('city') }}"
                                     placeholder="Nhập Tỉnh/TP" required
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-2xl">
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-2xl"> --}}
+
+                                <input type="text" id="province_display" readonly
+                                    class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-2xl"
+                                    placeholder="Tự động hiện Tỉnh/TP">
+                                <input type="hidden" name="city" id="province_id">
                             </div>
                         </div>
                     </div>
@@ -284,6 +291,59 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#ward_select').select2({
+                ajax: {
+                    url: "/api/search-wards",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        // Select2 bắt buộc cần trường 'id' và 'text'
+                        var results = data.map(function(item) {
+                            return {
+                                id: item.id,
+                                text: item.ward_name, //+ ' (' + item.province_name + ')'
+                                p_name: item.province_name,
+                                p_id: item.province_id
+                            };
+                        });
+                        return {
+                            results: results
+                        };
+                    }
+                },
+                minimumInputLength: 2,
+                placeholder: "Gõ để tìm phường/xã",
+                allowClear: true,
+                language: {
+                    inputTooShort: function() {
+                        return "Vui lòng nhập 2 ký tự trở lên...";
+                    },
+                    noResults: function() {
+                        return " không tìm thấy phường này";
+                    },
+                    searching: function() {
+                        return "Đang tìm kiếm...";
+                    }
+                },
+            });
+            $('#ward_select').on('select2:select', function (e) {
+            var data = e.params.data;
+            // Gán tên tỉnh vào ô hiển thị
+            $('#province_display').val(data.p_name);
+            // Gán ID tỉnh vào input ẩn
+            $('#province_id').val(data.p_id);
+        });
+        });
+    </script>
     <script>
         function setupSmartPreview(inputId, imgPreviewId, pdfPreviewId, containerId, nameId) {
             const input = document.getElementById(inputId);

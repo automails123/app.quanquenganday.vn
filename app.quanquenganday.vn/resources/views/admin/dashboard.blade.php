@@ -11,7 +11,7 @@
 
                     <h3 class="text-lg font-bold text-gray-900 mb-4 px-2">Menu chức năng</h3>
                     <div class="space-y-4">
-                        <a href="#"
+                        <a href=""
                             class="flex items-center justify-between bg-black p-4 rounded-2xl text-white shadow-lg shadow-black/20">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
@@ -31,15 +31,15 @@
                             </svg>
                         </a>
 
-                        <a href=""
-                            class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border shadow-sm hover:bg-black transition">
+                        <a href="{{ route('admin.assign.index') }}"
+                            class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border shadow-sm hover:bg-black transition group">
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M112,80a16,16,0,1,1,16,16A16,16,0,0,1,112,80ZM64,80a64,64,0,0,1,128,0c0,59.95-57.58,93.54-60,94.95a8,8,0,0,1-7.94,0C121.58,173.54,64,140,64,80Zm16,0c0,42.2,35.84,70.21,48,78.5,12.15-8.28,48-36.3,48-78.5a48,48,0,0,0-96,0Zm122.77,67.63a8,8,0,0,0-5.54,15C213.74,168.74,224,176.92,224,184c0,13.36-36.52,32-96,32s-96-18.64-96-32c0-7.08,10.26-15.26,26.77-21.36a8,8,0,0,0-5.54-15C29.22,156.49,16,169.41,16,184c0,31.18,57.71,48,112,48s112-16.82,112-48C240,169.41,226.78,156.49,202.77,147.63Z"></path></svg>
                                 </div>
                                 <div>
-                                    <p class="font-bold text-gray-900">Gắn phường cho user</p>
+                                    <p class="font-bold text-gray-900 group-hover:text-white">Gắn phường cho user</p>
                                     <p class="text-xs md:text-sm text-gray-400">Phân khu vưc quản lý</p>
                                 </div>
                             </div>
@@ -47,8 +47,8 @@
                                 <path d="M9 5l7 7-7 7" stroke-width="2" />
                             </svg>
                         </a>
-                        <a href=""
-                            class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border shadow-sm hover:bg-black transition">
+                        <a href="{{ route('admin.notifications.create') }}"
+                            class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border shadow-sm hover:bg-black transition group">
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500">
@@ -66,7 +66,7 @@
 
                         {{-- Item: Danh sách quán --}}
                         <a href=""
-                            class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border shadow-sm hover:bg-black transition">
+                            class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border shadow-sm hover:bg-black transition group">
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500">
@@ -83,7 +83,7 @@
                         </a>
 
                         <a href=""
-                            class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border shadow-sm hover:bg-black transition">
+                            class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border shadow-sm hover:bg-black transition group">
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500">
@@ -100,14 +100,14 @@
                         </a>
 
                         <a href=""
-                            class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border shadow-sm hover:bg-black transition">
+                            class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border shadow-sm hover:bg-black transition group">
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M230.14,58.87A8,8,0,0,0,224,56H62.68L56.6,22.57A8,8,0,0,0,48.73,16H24a8,8,0,0,0,0,16h18L67.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,160,204a28,28,0,1,0,28-28H91.17a8,8,0,0,1-7.87-6.57L80.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,230.14,58.87ZM104,204a12,12,0,1,1-12-12A12,12,0,0,1,104,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,200,204Zm4-74.57A8,8,0,0,1,196.1,136H77.22L65.59,72H214.41Z"></path></svg>
                                 </div>
                                 <div>
-                                    <p class="font-bold text-gray-900">Duyệt đơn hàng</p>
+                                    <p class="font-bold text-gray-900 group-hover:text-white">Duyệt đơn hàng</p>
                                     <p class="text-xs md:text-sm text-gray-400">Đơn hàng sale tạo</p>
                                 </div>
                             </div>

@@ -106,14 +106,14 @@ if (!function_exists('calculate_pos_earnings')) {
 
         // 6. Quản lý khu vực (5% doanh số khu vực)
         $area_bonus = 0;
-        if ($user->is_area_manager) {
-            // Giả sử tính trên tổng doanh số các shop cùng Phường/Quận với Sale này
-            $area_sales = \App\Models\Order::where('status', 'paid')
-                ->whereHas('shop', function($q) use ($user) {
-                    $q->where('ward', $user->ward); // Giả định user và shop có cùng cột ward
-                })->sum('amount');
-            $area_bonus = $area_sales * 0.05;
-        }
+        // if ($user->is_area_manager) {
+        //     // Giả sử tính trên tổng doanh số các shop cùng Phường/Quận với Sale này
+        //     $area_sales = \App\Models\Order::where('status', 'paid')
+        //         ->whereHas('shop', function($q) use ($user) {
+        //             $q->where('ward', $user->ward); // Giả định user và shop có cùng cột ward
+        //         })->sum('amount');
+        //     $area_bonus = $area_sales * 0.05;
+        // }
 
         return [
             'direct' => $direct,

@@ -20,12 +20,28 @@
                     <x-slot name="trigger">
                         <span
                             class="inline-flex items-center gap-1 md:gap-1 cursor-pointer text-gray-500 max-md:flex-col max-md:items-center text-sm max-md:text-xs">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                fill="currentColor" viewBox="0 0 256 256">
-                                <path
-                                    d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z">
-                                </path>
-                            </svg>
+                            @if (auth()->user()->unreadNotificationsCount() > 0)
+                                <span
+                                    class="relative flex-shrink-0 rounded-full border bg-black text-white w-9 h-9 inline-flex items-center justify-center p-1">
+                                    <i class="rounded-full w-2 h-2 bg-red-500 block absolute top-1 right-2"></i>
+                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
+                                        height="32" fill="currentColor" viewBox="0 0 256 256">
+                                        <path
+                                            d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            @else
+                                <span class="relative">
+                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
+                                        height="32" fill="currentColor" viewBox="0 0 256 256">
+                                        <path
+                                            d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            @endif
+
                             Thông báo
                         </span>
                     </x-slot>
@@ -36,6 +52,7 @@
                                 <div class="inline-flex items-center gap-2">
                                     <span
                                         class="flex-shrink-0 rounded-full border bg-white text-black w-8 h-8 inline-flex items-center justify-center">
+
                                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
                                             height="32" fill="currentColor" viewBox="0 0 256 256">
                                             <path
@@ -62,71 +79,82 @@
                                     </span>
                                 </span>
                             </div>
-                            <div class="pb-2 pt-3 md:pt-4 px-4 flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-90px)] md:max-h-[485px]">
-                                <div class="rounded-2xl bg-black p-3 flex">
-                                    <div class="flex gap-1 md:gap-2">
-                                        <span
-                                            class="bg-blue-100 rounded-2xl w-9 h-9 flex items-center justify-center text-blue-500 flex-shrink-0">
-                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
+                            <div
+                                class="pb-2 pt-3 md:pt-4 px-4 flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-90px)] md:max-h-[485px]">
+
+                                @forelse(auth()->user()->notifications()->orderBy('created_at', 'desc')->get() as $n)
+                                    @php
+                                        $isUnread = is_null($n->pivot->read_at);
+                                        // Cấu hình màu sắc/icon theo type
+                                        $config = [
+                                            'admin' => [
+                                                'bg' => 'bg-slate-100',
+                                                'text' => 'text-black',
+                                                'iconBg' => 'bg-orange-100',
+                                                'iconColor' => 'text-orange-500',
+                                                'icon' =>
+                                                    '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M168,224a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,224ZM227.39,60.32a111.36,111.36,0,0,0-39.12-43.08,8,8,0,1,0-8.54,13.53,94.13,94.13,0,0,1,33.46,36.91,8,8,0,0,0,14.2-7.36ZM35.71,72a8,8,0,0,0,7.1-4.32A94.13,94.13,0,0,1,76.27,30.77a8,8,0,1,0-8.54-13.53A111.36,111.36,0,0,0,28.61,60.32,8,8,0,0,0,35.71,72Zm186.1,103.94A16,16,0,0,1,208,200H48a16,16,0,0,1-13.79-24.06C43.22,160.39,48,138.28,48,112a80,80,0,0,1,160,0C208,138.27,212.78,160.38,221.81,175.94ZM208,184c-10.64-18.27-16-42.49-16-72a64,64,0,0,0-128,0c0,29.52-5.38,53.74-16,72Z"></path></svg>',
+                                            ],
+                                            'new_store' => [
+                                                'bg' => 'bg-black',
+                                                'text' => 'text-white',
+                                                'iconBg' => 'bg-blue-100',
+                                                'iconColor' => 'text-blue-500',
+                                                'icon' => '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
                                                 height="32" fill="currentColor" viewBox="0 0 256 256">
                                                 <path
                                                     d="M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z">
                                                 </path>
-                                            </svg>
-                                        </span>
-                                        <div class="text-white">
-                                            <p class="font-bold">Có quán mới đăng ký</p>
-                                            <p class="text-xs text-gray-300">Cafe mộc đăng ký từ link của bạn
-                                            </p>
-                                            <p class="text-xs text-gray-300 mt-0.5">Hôm nay, 08:40</p>
-                                        </div>
-                                    </div>
-                                    <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
-                                </div>
-                                <!--Sale-->
-                                <div class="rounded-2xl bg-black p-3 flex">
-                                    <div class="flex gap-1 md:gap-2">
-                                        <span
-                                            class="bg-green-100 rounded-2xl w-9 h-9 flex items-center justify-center text-green-500 flex-shrink-0">
-                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
+                                            </svg>',
+                                            ],
+                                            'new_sale' => [
+                                                'bg' => 'bg-black',
+                                                'text' => 'text-white',
+                                                'iconBg' => 'bg-green-100',
+                                                'iconColor' => 'text-green-500',
+                                                'icon' => '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
                                                 height="32" fill="currentColor" viewBox="0 0 256 256">
                                                 <path
                                                     d="M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z">
                                                 </path>
-                                            </svg>
-                                        </span>
-                                        <div class="text-white">
-                                            <p class="font-bold">Có sale mới</p>
-                                            <p class="text-xs text-gray-300">Trần văn B đăng ký từ link của bạn
-                                            </p>
-                                            <p class="text-xs text-gray-300 mt-0.5">Hôm nay, 08:40</p>
+                                            </svg>',
+                                            ],
+                                        ][$n->type] ?? [
+                                            'bg' => 'bg-white',
+                                            'text' => 'text-black',
+                                            'iconBg' => 'bg-gray-100',
+                                            'iconColor' => 'text-gray-500',
+                                            'icon' => 'fa-bell',
+                                        ];
+                                    @endphp
+
+                                                                           
+
+                                    <div class="rounded-2xl bg-black p-3 flex w-full"
+                                        onclick="markAsRead({{ $n->id }})">
+                                        <div class="flex gap-1 md:gap-2 w-full">
+                                            <span
+                                                class="rounded-2xl w-9 h-9 flex items-center justify-center text-blue-500 flex-shrink-0 {{ $isUnread ? $config['bg'] : 'bg-white border border-gray-100' }}">
+                                                 {!! $config['icon'] !!}
+                                            </span>
+                                            <div class="{{ $isUnread ? $config['text'] : 'text-black' }}">
+                                                <p class="font-bold">Có quán mới đăng ký {{ $n->title }}</p>
+                                                <p class="text-xs {{ $isUnread && $config['bg'] == 'bg-black' ? 'text-gray-300' : 'text-gray-500' }} mt-0.5 line-clamp-1">
+                                                    {{ $n->content }}
+                                                </p>
+                                                <p class="text-xs  mt-0.5 {{ $isUnread && $config['bg'] == 'bg-black' ? 'text-gray-400' : 'text-gray-400' }}"> {{ $n->created_at->diffForHumans() }}</p>
+                                            </div>
                                         </div>
+
+                                        @if ($isUnread)
+                                            <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
+                                        @endif
                                     </div>
-                                    <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
-                                </div>
-                                <!--admin-->
-                                <div class="rounded-2xl bg-slate-100 p-3 flex">
-                                    <div class="flex gap-1 md:gap-2">
-                                        <span
-                                            class="bg-green-100 rounded-2xl w-9 h-9 flex items-center justify-center text-green-500 flex-shrink-0">
-                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
-                                                height="32" fill="currentColor" viewBox="0 0 256 256">
-                                                <path
-                                                    d="M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z">
-                                                </path>
-                                            </svg>
-                                        </span>
-                                        <div class="text-black">
-                                            <p class="font-bold">Thông báo Admin</p>
-                                            <p class="text-xs text-gray-500">Nhắc nhở bổ sung quán
-                                            </p>
-                                            <p class="text-xs text-gray-500 mt-0.5">Hôm nay, 08:40</p>
-                                        </div>
+                                @empty
+                                    <div class="text-center py-10">
+                                        <p class="text-gray-400 text-sm italic">Hôm nay chưa có thông báo nào...</p>
                                     </div>
-                                    <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
-                                </div>
-                               
-                                
+                                @endforelse
                             </div>
 
                         </div>
@@ -138,8 +166,8 @@
                 href="{{ route('sale.orders.create') }}">
                 <span
                     class="bg-black text-white rounded-full min-w-14 min-h-14 md:min-w-12 md:min-h-12 flex items-center justify-center shadow-lg max-md:absolute max-md:-top-2">
-                    <svg class="w-8 h-8 md:w-5 md:h-5 lg:w-7 lg:h-7" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                        fill="currentColor" viewBox="0 0 256 256">
+                    <svg class="w-8 h-8 md:w-5 md:h-5 lg:w-7 lg:h-7" xmlns="http://www.w3.org/2000/svg"
+                        width="32" height="32" fill="currentColor" viewBox="0 0 256 256">
                         <path
                             d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z">
                         </path>
@@ -280,10 +308,16 @@
                                                 class="text-xs text-gray-500 uppercase">{{ auth()->user()->affiliate_id }}</span>
                                             @php
                                                 $user = auth()->user();
+                                                $userWards = $user->wards;
                                             @endphp
-                                            @if ($user->is_area_manager && $user->area)
-                                                <span
-                                                    class="text-xs text-red-500 capitalize">{{ $user->area->name }}</span>
+                                            @if ($userWards->count() > 0)
+                                                <div class="flex flex-wrap gap-1">
+                                                    @foreach ($userWards as $ward)
+                                                        <span class="text-xs text-red-500 capitalize">
+                                                            {{ $ward->name }}{{ !$loop->last ? ',' : '' }}
+                                                        </span>
+                                                    @endforeach
+                                                </div>
                                             @endif
                                         </div>
                                         <p class="mt-2">

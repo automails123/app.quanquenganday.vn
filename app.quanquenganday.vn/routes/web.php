@@ -17,6 +17,9 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\CCCDController;
 
+use App\Http\Controllers\Admin\UserLocationController;
+use App\Http\Controllers\Admin\NotificationController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -83,8 +86,20 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
      Route::post('/settings/store', [SettingController::class, 'store'])->name('settings.store');
 
+     Route::get('/assign-wards', [UserLocationController::class, 'index'])->name('assign.index');
+    Route::post('/assign-wards', [UserLocationController::class, 'store'])->name('assign.store');
+
+    
+    
+    // Trang hiển thị Form tạo thông báo
+    Route::get('/notifications/create', [NotificationController::class, 'create'])->name('notifications.create');    
+    // Xử lý lưu thông báo vào DB
+    Route::post('/notifications/store', [NotificationController::class, 'store'])->name('notifications.store');
+
 });
 
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+Route::post('/notifications/{id}/read', [NotificationController::class, 'markRead']);
 //xoá cached
 use Illuminate\Support\Facades\Artisan;
 
@@ -136,3 +151,7 @@ Route::get('/tools', function () {
     return view('tools.index');
 })->name('tools.index');
 
+
+use App\Http\Controllers\LocationController;
+
+Route::get('/api/search-wards', [LocationController::class, 'searchWards'])->name('api.search.wards');

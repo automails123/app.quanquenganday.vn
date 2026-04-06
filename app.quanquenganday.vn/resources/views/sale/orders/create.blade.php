@@ -57,9 +57,16 @@
                         </div>
 
                         <div>
-                            <label for="price_input_2" class="label-custom text-sm text-gray-600 font-semibold">Giá sản phẩm</label>
+                            <label for="price_input_2" class="label-custom text-sm text-gray-600 font-semibold">Giá sản
+                                phẩm</label>
                             <div class="input-group mt-1 relative">
-                                <svg class="absolute top-1/2 -translate-y-1/2 left-2.5 w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z"></path></svg>
+                                <svg class="absolute top-1/2 -translate-y-1/2 left-2.5 w-5 h-5 text-gray-500"
+                                    xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                                    viewBox="0 0 256 256">
+                                    <path
+                                        d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z">
+                                    </path>
+                                </svg>
                                 <input type="text" id="price_input_2"
                                     value="{{ number_format($defaultPrice, 0, ',', '.') }}đ / năm" readonly
                                     class="w-full pl-9 pr-4 py-3 text-sm text-gray-500 placeholder:text-gray-400 focus:outline-1 focus:-outline-offset-1 focus:outline-indigo-600 rounded-2xl shadow-sm border border-gray-200">
@@ -86,9 +93,16 @@
                         </div>
 
                         <div>
-                            <label for="cycle_2" class="label-custom text-sm text-gray-600 font-semibold">Thành tiền</label>
+                            <label for="cycle_2" class="label-custom text-sm text-gray-600 font-semibold">Thành
+                                tiền</label>
                             <div class="input-group mt-1 relative">
-                                <svg class="absolute top-1/2 -translate-y-1/2 left-2.5 w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm40-68a28,28,0,0,1-28,28h-4v8a8,8,0,0,1-16,0v-8H104a8,8,0,0,1,0-16h36a12,12,0,0,0,0-24H116a28,28,0,0,1,0-56h4V72a8,8,0,0,1,16,0v8h16a8,8,0,0,1,0,16H116a12,12,0,0,0,0,24h24A28,28,0,0,1,168,148Z"></path></svg>
+                                <svg class="absolute top-1/2 -translate-y-1/2 left-2.5 w-5 h-5 text-gray-500"
+                                    xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                                    viewBox="0 0 256 256">
+                                    <path
+                                        d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm40-68a28,28,0,0,1-28,28h-4v8a8,8,0,0,1-16,0v-8H104a8,8,0,0,1,0-16h36a12,12,0,0,0,0-24H116a28,28,0,0,1,0-56h4V72a8,8,0,0,1,16,0v8h16a8,8,0,0,1,0,16H116a12,12,0,0,0,0,24h24A28,28,0,0,1,168,148Z">
+                                    </path>
+                                </svg>
                                 <input name="total_display" type="text" id="total_display" value="1 năm" readonly
                                     class="w-full pl-9 pr-4 py-3 font-bold text-sm text-black focus:outline-1 focus:-outline-offset-1 focus:outline-indigo-600 rounded-2xl shadow-sm border border-gray-200">
                                 <input name="cycle" type="hidden" id="cycle" value="1">
@@ -103,7 +117,8 @@
                                     <p class="text-gray-400 text-[11px] font-bold uppercase">Hoa hồng dự kiến</p>
                                     <h3 class="text-2xl font-black text-gray-900 mt-1" id="comm_main">0đ</h3>
                                 </div>
-                                <p class="text-xs text-gray-400 font-bold text-right leading-tight">Tự tính theo<br>chính sách POS</p>
+                                <p class="text-xs text-gray-400 font-bold text-right leading-tight">Tự tính
+                                    theo<br>chính sách POS</p>
                             </div>
 
                             <div class="space-y-4">
@@ -124,11 +139,34 @@
                                     </span>
 
                                 </div>
-                                @if (Auth::user()->is_area_manager)
+                                {{-- @if (Auth::user()->is_area_manager)
                                     <div
                                         class="flex justify-between items-center pt-3 mt-2 border-t border-dashed border-gray-100">
                                         <span class="text-xs font-bold text-green-600 uppercase">Quản lý khu vực</span>
                                         <span class="text-xs font-bold text-green-600">+ 5% Vùng</span>
+                                    </div>
+                                @endif --}}
+                                @php
+                                    // Lấy danh sách phường của User hiện tại
+                                    $userWards = Auth::user()->wards;
+                                @endphp
+
+                                @if ($userWards->count() > 0)
+                                    <div class="flex flex-col pt-3 mt-2 border-t border-dashed border-gray-100 gap-1">
+                                        <div class="flex justify-between items-center">
+                                            <span
+                                                class="text-[10px] font-bold text-green-600 uppercase tracking-wider">Quản lý khu vực</span>
+                                            <span class="text-[10px] font-bold text-green-600">+ 5% Phường</span> 
+                                        </div>
+
+                                        <div class="flex flex-wrap gap-1 mt-1">
+                                            @foreach ($userWards as $ward)
+                                                <span
+                                                    class="bg-green-50 text-green-700 text-[9px] px-2 py-0.5 rounded-md border border-green-100 font-bold capitalize">
+                                                    {{ $ward->name }}
+                                                </span>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 @endif
                             </div>
@@ -140,8 +178,7 @@
                     class="w-full bg-black text-white rounded-[1.5rem] py-5 font-black text-sm uppercase tracking-[0.2em] shadow-xl active:scale-95 transition-transform">
                     Tạo đơn POS
                 </button>
-            </form>
-            {{-- </div> --}}
+          
 
             <script>
                 const priceInput = document.getElementById('price_input');

@@ -217,4 +217,18 @@ class User extends Authenticatable implements MustVerifyEmail
         // Mặc định Laravel tìm user_id, nếu bạn đặt tên khác thì điền vào tham số thứ 2
         return $this->hasOne(BankAccount::class); 
     }
+
+    public function wards() {
+        return $this->belongsToMany(Ward::class, 'user_ward', 'user_id', 'ward_code');
+    }
+
+    public function notifications() {
+        return $this->belongsToMany(Notification::class, 'notification_user')
+                    ->withPivot('read_at')
+                    ->withTimestamps();
+    }
+    public function unreadNotificationsCount()
+    {
+        return $this->notifications()->wherePivot('read_at', null)->count();
+    }
 }

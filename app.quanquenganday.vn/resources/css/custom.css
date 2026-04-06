@@ -1,0 +1,15 @@
+.selection .select2-selection.select2-selection--single {
+    @apply w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-2xl h-auto;
+}
+.selection .select2-selection.select2-selection--single .select2-selection__arrow {
+    @apply top-1/2 -translate-y-1/2 right-2
+}
+.select2-dropdown.select2-dropdown--below {
+    @apply border border-gray-200 rounded-bl-2xl rounded-br-2xl p-2.5
+}
+.select2-dropdown.select2-dropdown--below .select2-results {
+    @apply text-gray-600 text-sm
+}
+.select2-dropdown.select2-dropdown--below .select2-search__field {
+@apply px-3 py-2 border border-gray-400 rounded-xl;
+}

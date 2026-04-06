@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Shop;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Admin\NotificationController;
 
 class AffiliateController extends Controller
 {
@@ -137,6 +140,21 @@ class AffiliateController extends Controller
             'role' => 'sale',
             'affiliate_id' => 'SALE' . strtoupper(Str::random(6)),
         ]);
+
+        if (isset($parent) && $parent->id) {
+            NotificationController::sendSystemNotification(
+                $parent->id, // Gửi đích danh cho người giới thiệu
+                'Có sale mới', 
+                '' . $user->name . ' đăng ký từ link của bạn'
+            );
+        }
+                // TỰ ĐỘNG GỬI THÔNG BÁO
+            NotificationController::sendSystemNotification(
+                1, // Gửi đích danh cho Admin ID = 1 (Ví dụ vậy)
+                'Có sale mới',
+                'Sale ' . $user->name . ' vừa đăng ký dưới mã của ' . $parent->name,
+                'new_sale'
+            );
 
         // 4. Đăng nhập ngay và chuyển hướng
         Auth::login($user);
