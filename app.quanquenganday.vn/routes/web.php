@@ -19,6 +19,11 @@ use App\Http\Controllers\CCCDController;
 
 use App\Http\Controllers\Admin\UserLocationController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\ShopController as AdminShopController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\CommissionController as AdminCommissionController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -87,19 +92,45 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
      Route::post('/settings/store', [SettingController::class, 'store'])->name('settings.store');
 
      Route::get('/assign-wards', [UserLocationController::class, 'index'])->name('assign.index');
-    Route::post('/assign-wards', [UserLocationController::class, 'store'])->name('assign.store');
-
-    
+    Route::post('/assign-wards', [UserLocationController::class, 'store'])->name('assign.store');   
     
     // Trang hiển thị Form tạo thông báo
     Route::get('/notifications/create', [NotificationController::class, 'create'])->name('notifications.create');    
     // Xử lý lưu thông báo vào DB
     Route::post('/notifications/store', [NotificationController::class, 'store'])->name('notifications.store');
+    //danh sách quán
+    Route::get('/shops', [AdminShopController::class, 'index'])->name('shops.index');
+    // Chi tiết quán
+    Route::get('/shops/{id}', [AdminShopController::class, 'show'])->name('shops.show');    
+    Route::post('/shops/{id}/status', [AdminShopController::class, 'updateStatus'])->name('shops.updateStatus');
+
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::post('/users/{id}/update-quick', [AdminUserController::class, 'updateQuick'])->name('users.updateQuick');
+
+    Route::get('/verify-cccd', [AdminUserController::class, 'cccdIndex'])->name('cccd.index');
+    Route::post('/verify-cccd/{id}', [AdminUserController::class, 'verifyCCCD'])->name('users.verify-cccd');
+
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{id}/approve', [AdminOrderController::class, 'approve'])->name('orders.approve');
+    Route::post('/orders/{id}/reject', [AdminOrderController::class, 'reject'])->name('orders.reject');
+
+
+     // 2. Sửa Route xử lý Update ảnh (Đưa về AdminUserController luôn)
+    Route::post('/users/{id}/update-cccd-images', [AdminUserController::class, 'updateCCCDImages'])
+         ->name('users.update-cccd-images');    
+
+    Route::prefix('commissions')->name('commissions.')->group(function () {
+        // Trang chính: Danh sách & Quản lý
+        Route::get('/', [AdminCommissionController::class, 'index'])->name('index');
+        
+        // Xử lý cộng/trừ số dư (Dùng chung 1 hàm hoặc tách ra)
+        Route::post('/adjust-balance/{id}', [AdminCommissionController::class, 'adjustBalance'])->name('adjust');
+    });
 
 });
 
 Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-Route::post('/notifications/{id}/read', [NotificationController::class, 'markRead']);
+Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
 //xoá cached
 use Illuminate\Support\Facades\Artisan;
 

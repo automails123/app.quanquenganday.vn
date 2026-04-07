@@ -87,6 +87,26 @@ class AffiliateController extends Controller
             'pos_price'      => $request->pos_price ?? 1800000,
             'status'         => 'pending', // Chờ duyệt
         ]);
+
+        if (isset($sale) && $sale->id) {
+            NotificationController::sendSystemNotification(
+                $sale->id, // Gửi đích danh cho người giới thiệu
+                'Có quán mới đăng ký', 
+                '' . $request->shop_name . ' đăng ký từ link của bạn',
+                'new_store'
+            );
+        }
+        $adminIds = User::where('role', 'admin')->pluck('id')->toArray();
+        if (!empty($adminIds)) {
+            // TỰ ĐỘNG GỬI THÔNG BÁO
+            NotificationController::sendSystemNotification(
+                $adminIds, //id role admin
+                'Có sale mới',
+                'Shop ' . $request->shop_name . ' vừa đăng ký dưới mã của ' . $sale->name,
+                'new_store'
+            );
+        }
+
         return redirect()->route('register.shop.success')->with('sale_phone', $sale->phone);
 
             // 5. Trả về thông báo thành công
@@ -139,22 +159,27 @@ class AffiliateController extends Controller
             'level' => $newUserLevel,
             'role' => 'sale',
             'affiliate_id' => 'SALE' . strtoupper(Str::random(6)),
+            // 'status' => 'not_uploaded'
         ]);
 
         if (isset($parent) && $parent->id) {
             NotificationController::sendSystemNotification(
                 $parent->id, // Gửi đích danh cho người giới thiệu
                 'Có sale mới', 
-                '' . $user->name . ' đăng ký từ link của bạn'
+                '' . $user->name . ' đăng ký từ link của bạn',
+                'new_sale'
             );
         }
-                // TỰ ĐỘNG GỬI THÔNG BÁO
+        $adminIds = User::where('role', 'admin')->pluck('id')->toArray();
+        if (!empty($adminIds)) {
+            // TỰ ĐỘNG GỬI THÔNG BÁO
             NotificationController::sendSystemNotification(
-                1, // Gửi đích danh cho Admin ID = 1 (Ví dụ vậy)
+                $adminIds, //id role admin
                 'Có sale mới',
                 'Sale ' . $user->name . ' vừa đăng ký dưới mã của ' . $parent->name,
                 'new_sale'
             );
+        }
 
         // 4. Đăng nhập ngay và chuyển hướng
         Auth::login($user);

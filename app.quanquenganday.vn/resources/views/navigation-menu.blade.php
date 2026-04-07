@@ -1,12 +1,12 @@
-<nav x-data="{ open: false }" class="bg-white md:border-b md:border-b-gray-100 max-md:fixed max-md:bottom-0 w-full">
+<nav x-data="{ open: false }" class="bg-white md:border-b md:border-b-gray-100 max-md:fixed max-md:bottom-0 max-md:z-10 w-full">
     <!-- Primary Navigation Menu -->
     <div class="container mx-auto">
         <div
             class="flex justify-between items-center h-16 max-md:px-0.5 max-md:shadow-xl max-md:border max-md:border-gray-100">
             <!-- Navigation Links -->
             <x-nav-link class="gap-1 md:gap-2 max-md:flex-col max-md:items-center max-md:flex-1 max-md:text-xs"
-                href="{{ auth()->user()->role === 'sale' ? route('sale.dashboard') : route('dashboard') }}"
-                :active="request()->routeIs('sale.dashboard') || request()->routeIs('dashboard')">
+                href="{{ auth()->user()->role === 'sale' ? route('sale.dashboard') : route('admin.dashboard') }}"
+                :active="request()->routeIs('sale.dashboard') || request()->routeIs('admin.dashboard')">
                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentcolor"
                     viewBox="0 0 256 256">
                     <path
@@ -20,6 +20,7 @@
                     <x-slot name="trigger">
                         <span
                             class="inline-flex items-center gap-1 md:gap-1 cursor-pointer text-gray-500 max-md:flex-col max-md:items-center text-sm max-md:text-xs">
+
                             @if (auth()->user()->unreadNotificationsCount() > 0)
                                 <span
                                     class="relative flex-shrink-0 rounded-full border bg-black text-white w-9 h-9 inline-flex items-center justify-center p-1">
@@ -82,24 +83,30 @@
                             <div
                                 class="pb-2 pt-3 md:pt-4 px-4 flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-90px)] md:max-h-[485px]">
 
-                                @forelse(auth()->user()->notifications()->orderBy('created_at', 'desc')->get() as $n)
+                                @forelse(auth()->user()->notifications()
+                                ->orderByRaw("CASE
+                                    WHEN type = 'new_store' THEN 1
+                                    WHEN type = 'new_sale' THEN 2
+                                    ELSE 3
+                                END ASC")
+                                ->orderBy('created_at', 'desc')->get() as $n)
                                     @php
                                         $isUnread = is_null($n->pivot->read_at);
                                         // Cấu hình màu sắc/icon theo type
                                         $config = [
-                                            'admin' => [
-                                                'bg' => 'bg-slate-100',
+                                            'system' => [
+                                                'bg' => 'bg-gray-50',
                                                 'text' => 'text-black',
-                                                'iconBg' => 'bg-orange-100',
-                                                'iconColor' => 'text-orange-500',
+                                                'iconBg' => 'bg-gray-50',
+                                                'iconText' => 'text-red-500',
                                                 'icon' =>
-                                                    '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M168,224a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,224ZM227.39,60.32a111.36,111.36,0,0,0-39.12-43.08,8,8,0,1,0-8.54,13.53,94.13,94.13,0,0,1,33.46,36.91,8,8,0,0,0,14.2-7.36ZM35.71,72a8,8,0,0,0,7.1-4.32A94.13,94.13,0,0,1,76.27,30.77a8,8,0,1,0-8.54-13.53A111.36,111.36,0,0,0,28.61,60.32,8,8,0,0,0,35.71,72Zm186.1,103.94A16,16,0,0,1,208,200H48a16,16,0,0,1-13.79-24.06C43.22,160.39,48,138.28,48,112a80,80,0,0,1,160,0C208,138.27,212.78,160.38,221.81,175.94ZM208,184c-10.64-18.27-16-42.49-16-72a64,64,0,0,0-128,0c0,29.52-5.38,53.74-16,72Z"></path></svg>',
+                                                    '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M248,120a48.05,48.05,0,0,0-48-48H160.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,32,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,159.12,214l11,7.33A16,16,0,0,0,194.5,212l11.77-44.36A48.07,48.07,0,0,0,248,120ZM48,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C134.65,155,90.84,164.07,48,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM200,152H168V88h32a32,32,0,1,1,0,64Z"></path></svg>',
                                             ],
                                             'new_store' => [
                                                 'bg' => 'bg-black',
                                                 'text' => 'text-white',
-                                                'iconBg' => 'bg-blue-100',
-                                                'iconColor' => 'text-blue-500',
+                                                'iconBg' => 'bg-blue-50',
+                                                'iconText' => 'text-blue-500',
                                                 'icon' => '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
                                                 height="32" fill="currentColor" viewBox="0 0 256 256">
                                                 <path
@@ -110,46 +117,53 @@
                                             'new_sale' => [
                                                 'bg' => 'bg-black',
                                                 'text' => 'text-white',
-                                                'iconBg' => 'bg-green-100',
-                                                'iconColor' => 'text-green-500',
-                                                'icon' => '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32"
-                                                height="32" fill="currentColor" viewBox="0 0 256 256">
-                                                <path
-                                                    d="M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z">
-                                                </path>
-                                            </svg>',
+                                                'iconBg' => 'bg-green-50',
+                                                'iconText' => 'text-green-500',
+                                                'icon' =>
+                                                    '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path></svg>',
                                             ],
                                         ][$n->type] ?? [
                                             'bg' => 'bg-white',
                                             'text' => 'text-black',
                                             'iconBg' => 'bg-gray-100',
-                                            'iconColor' => 'text-gray-500',
-                                            'icon' => 'fa-bell',
+                                            'iconText' => 'text-black',
+                                            'icon' =>
+                                                '<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256"><path d="M168,224a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,224ZM227.39,60.32a111.36,111.36,0,0,0-39.12-43.08,8,8,0,1,0-8.54,13.53,94.13,94.13,0,0,1,33.46,36.91,8,8,0,0,0,14.2-7.36ZM35.71,72a8,8,0,0,0,7.1-4.32A94.13,94.13,0,0,1,76.27,30.77a8,8,0,1,0-8.54-13.53A111.36,111.36,0,0,0,28.61,60.32,8,8,0,0,0,35.71,72Zm186.1,103.94A16,16,0,0,1,208,200H48a16,16,0,0,1-13.79-24.06C43.22,160.39,48,138.28,48,112a80,80,0,0,1,160,0C208,138.27,212.78,160.38,221.81,175.94ZM208,184c-10.64-18.27-16-42.49-16-72a64,64,0,0,0-128,0c0,29.52-5.38,53.74-16,72Z"></path></svg>',
                                         ];
                                     @endphp
+                                    @if ($isUnread)
+                                        <div class="rounded-2xl {{ $config['bg'] ? $config['bg'] : '' }}  p-3 flex w-full cursor-pointer"
+                                            onclick="markAsRead({{ $n->id }})">
+                                            <div class="flex gap-1 md:gap-2 w-full">
+                                                <div class="flex-shrink-0">
+                                                    @if ($n->type == 'system' && isset($n->image))
+                                                        <img src="{{ asset('storage/' . $n->image) }}"
+                                                            class="rounded-2xl w-10 h-10 object-cover border border-gray-200">
+                                                    @else
+                                                        <span
+                                                            class="rounded-2xl w-9 h-9 flex items-center justify-center flex-shrink-0  {{ $isUnread ? $config['iconText'] : 'text-black' }} {{ $isUnread ? $config['iconBg'] : 'bg-white border border-gray-100' }}">
+                                                            {!! $config['icon'] !!}
+                                                        </span>
+                                                    @endif
+                                                </div>
 
-                                                                           
-
-                                    <div class="rounded-2xl bg-black p-3 flex w-full"
-                                        onclick="markAsRead({{ $n->id }})">
-                                        <div class="flex gap-1 md:gap-2 w-full">
-                                            <span
-                                                class="rounded-2xl w-9 h-9 flex items-center justify-center text-blue-500 flex-shrink-0 {{ $isUnread ? $config['bg'] : 'bg-white border border-gray-100' }}">
-                                                 {!! $config['icon'] !!}
-                                            </span>
-                                            <div class="{{ $isUnread ? $config['text'] : 'text-black' }}">
-                                                <p class="font-bold">Có quán mới đăng ký {{ $n->title }}</p>
-                                                <p class="text-xs {{ $isUnread && $config['bg'] == 'bg-black' ? 'text-gray-300' : 'text-gray-500' }} mt-0.5 line-clamp-1">
-                                                    {{ $n->content }}
-                                                </p>
-                                                <p class="text-xs  mt-0.5 {{ $isUnread && $config['bg'] == 'bg-black' ? 'text-gray-400' : 'text-gray-400' }}"> {{ $n->created_at->diffForHumans() }}</p>
+                                                <div class="{{ $isUnread ? $config['text'] : 'text-white' }}">
+                                                    <p class="font-bold">{{ $n->title }}</p>
+                                                    <p
+                                                        class="text-xs {{ $isUnread && $config['bg'] == 'bg-black' ? 'text-gray-300' : 'text-gray-500' }} mt-0.5 line-clamp-3">
+                                                        {{ $n->content }}
+                                                    </p>
+                                                    <p
+                                                        class="text-xs  mt-0.5 {{ $isUnread && $config['bg'] == 'bg-black' ? 'text-gray-400' : 'text-gray-400' }}">
+                                                        {{ $n->created_at->diffForHumans() }}</p>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        @if ($isUnread)
+
                                             <i class="rounded-full w-2 h-2 bg-red-500 block mt-1 flex-shrink-0"></i>
-                                        @endif
-                                    </div>
+
+                                        </div>
+                                    @endif
                                 @empty
                                     <div class="text-center py-10">
                                         <p class="text-gray-400 text-sm italic">Hôm nay chưa có thông báo nào...</p>
@@ -166,8 +180,8 @@
                 href="{{ route('sale.orders.create') }}">
                 <span
                     class="bg-black text-white rounded-full min-w-14 min-h-14 md:min-w-12 md:min-h-12 flex items-center justify-center shadow-lg max-md:absolute max-md:-top-2">
-                    <svg class="w-8 h-8 md:w-5 md:h-5 lg:w-7 lg:h-7" xmlns="http://www.w3.org/2000/svg"
-                        width="32" height="32" fill="currentColor" viewBox="0 0 256 256">
+                    <svg class="w-8 h-8 md:w-5 md:h-5 lg:w-7 lg:h-7" xmlns="http://www.w3.org/2000/svg" width="32"
+                        height="32" fill="currentColor" viewBox="0 0 256 256">
                         <path
                             d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z">
                         </path>
@@ -602,3 +616,28 @@
         </div>
     </div>
 </nav>
+<script>
+    function markAsRead(id) {
+        // Lấy token từ meta tag cho chắc chắn
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch(`/notifications/${id}/read`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Thay vì reload cả trang, bạn có thể xóa chấm đỏ bằng JS 
+                    // Nhưng nếu muốn đổi màu Background nhanh nhất thì dùng reload:
+                    location.reload();
+                } else {
+                    console.error('Lỗi hệ thống không thể đánh dấu đọc.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>

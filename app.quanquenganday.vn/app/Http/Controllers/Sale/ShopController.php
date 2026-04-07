@@ -12,15 +12,27 @@ class ShopController extends Controller
     
     public function index()
     {
-        // Dùng eager loading 'sale' nếu cần, và sắp xếp mới nhất lên đầu
-        $shops = Shop::where('sale_id', Auth::id())
-                    ->latest()
-                    ->get();
+        $user = Auth::user();
+        
+        $query = Shop::query();
 
-        // Đếm tổng số để hiển thị con
-        $totalCount = $shops->count();
+        // Phân quyền: Admin thấy hết, Sale thấy quán của mình
+        if ($user->role !== 'admin') {
+            $query->where('sale_id', $user->id);
+        }
 
-        return view('sale.shops.index', compact('shops', 'totalCount'));
+        // Nếu có tìm kiếm (Search)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('phone', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $shops = $query->latest()->paginate(10);
+
+        return view('admin.shops.index', compact('shops'));
     }
 
     /**

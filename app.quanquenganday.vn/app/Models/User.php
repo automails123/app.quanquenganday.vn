@@ -43,6 +43,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'cccd_back_image',
         'cccd_status',
         'tax_code',
+        'status'
     ];
     protected static function booted()
 {
@@ -231,4 +232,24 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->notifications()->wherePivot('read_at', null)->count();
     }
+
+    public function getStatusLabelAttribute()
+{
+    return match ($this->status) {
+        'active'  => 'Đã xác minh',
+        'pending' => 'Chờ xác minh',
+        'blocked' => 'Đã khóa',
+        default   => 'Chờ xác minh',
+    };
+}
+
+public function getStatusClassAttribute()
+{
+    return match ($this->status) {
+        'active'  => 'text-green-500',
+        'pending' => 'text-orange-500',
+        'blocked' => 'text-red-500',
+        default   => 'text-gray-500',
+    };
+}
 }

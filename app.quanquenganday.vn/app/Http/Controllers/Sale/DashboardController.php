@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Shop;
 use App\Models\Order;
-use App\Models\SystemNotification;
+// use App\Models\SystemNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -73,9 +73,9 @@ $topSales = User::where('role', 'sale')
     ->take(5)
     ->get();
         // 6. Kiểm tra thông báo chưa đọc (Để hiện chấm đỏ trên icon Chuông)
-        $hasUnreadNoti = SystemNotification::where('user_id', $user->id)
-            ->where('is_read', false)
-            ->exists();
+        // $hasUnreadNoti = SystemNotification::where('user_id', $user->id)
+        //     ->where('is_read', false)
+        //     ->exists();
 
         return view('sale.dashboard', compact(
             'user', 
@@ -84,7 +84,7 @@ $topSales = User::where('role', 'sale')
             'posThisMonth', 
             'activeShops', 
             'topSales',
-            'hasUnreadNoti',
+            // 'hasUnreadNoti',
             'monthlyBalance'
         ));
     }

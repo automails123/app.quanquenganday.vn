@@ -77,7 +77,7 @@ class NotificationController extends Controller {
             'sender_id' => auth()->id(),
             'title' => $request->title,
             'content' => $request->content,
-            'type' => 'admin', // Loại do admin tạo
+            'type' => 'system', // Loại do admin tạo
             'image' => $imagePath,
         ]);
 
@@ -91,11 +91,11 @@ class NotificationController extends Controller {
         return redirect()->route('admin.notifications.create')->with('success', 'Đã gửi thông báo thành công!');
     }
 
-    public static function sendSystemNotification($receiverIds, $title, $content, $type = 'system') 
+    public static function sendSystemNotification($receiverIds, $title, $content, $type = 'system', $senderId = null)
     {
         // 1. Tạo nội dung gốc
         $notification = \App\Models\Notification::create([
-            'sender_id' => null,
+            'sender_id' => $senderId,
             'title' => $title,
             'content' => $content,
             'type' => $type,

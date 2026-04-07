@@ -193,7 +193,7 @@
                                 <input type="text" id="province_display" readonly
                                     class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-2xl"
                                     placeholder="Tự động hiện Tỉnh/TP">
-                                <input type="hidden" name="city" id="province_id">
+                                <input type="hidden" name="city" id="province_code">
                             </div>
                         </div>
                     </div>
@@ -305,14 +305,15 @@
                             q: params.term
                         };
                     },
-                    processResults: function(data) {
+                    processResults: function(data) {                        
                         // Select2 bắt buộc cần trường 'id' và 'text'
-                        var results = data.map(function(item) {
+                        var results = data.map(function(item) {   
+                            console.log(item);
                             return {
                                 id: item.id,
                                 text: item.ward_name, //+ ' (' + item.province_name + ')'
                                 p_name: item.province_name,
-                                p_id: item.province_id
+                                p_id: item.province_code
                             };
                         });
                         return {
@@ -340,7 +341,7 @@
             // Gán tên tỉnh vào ô hiển thị
             $('#province_display').val(data.p_name);
             // Gán ID tỉnh vào input ẩn
-            $('#province_id').val(data.p_id);
+            $('#province_code').val(data.p_id);
         });
         });
     </script>

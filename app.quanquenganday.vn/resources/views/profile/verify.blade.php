@@ -2,7 +2,7 @@
     {{-- Khởi tạo Alpine.js cho toàn bộ vùng nội dung --}}
     <div x-data="{
         step: '{{ auth()->user()->email_verified_at ? 'verified' : 'request' }}',
-        cccdStep: '{{ auth()->user()->cccd_status === 'pending' ? 'request' : auth()->user()->cccd_status }}',
+        cccdStep: '{{ auth()->user()->cccd_status === 'processing' ? 'request' : auth()->user()->cccd_status }}',
     
         loading: false,
         cccdLoading: false,
@@ -229,7 +229,10 @@
                             Xác minh ngay
                         </button>
                     </template>
-
+                    <template x-if="cccdStep === 'pending'">
+                        <span
+                            class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-bold border border-blue-100">Chưa cập nhật dữ liệu</span>
+                    </template>
                     <template x-if="cccdStep === 'processing'">
                         <span
                             class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-bold border border-blue-100">Đang
@@ -238,8 +241,7 @@
 
                     <template x-if="cccdStep === 'approved'">
                         <span
-                            class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs font-bold border border-emerald-100">Đã
-                            xác minh</span>
+                            class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs font-bold border border-emerald-100">Đã xác minh</span>
                     </template>
 
                     <template x-if="cccdStep === 'rejected'">

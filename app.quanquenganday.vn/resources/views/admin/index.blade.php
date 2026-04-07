@@ -14,7 +14,7 @@
                 <div class="bg-white p-4 md:p-7 rounded-3xl shadow-sm border border-gray-100">
 
                     <div class="bg-gray-50 p-3 md:p-4 rounded-3xl mb-6">
-                        <div class="flex justify-between mb-4">
+                        <div class="flex justify-between mb-4 gap-1.5">
                             <span class="text-gray-600">User</span>
                             <span class="font-bold">{{ $user->name }}</span>
                         </div>
