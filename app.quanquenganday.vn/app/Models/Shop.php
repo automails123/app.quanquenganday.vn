@@ -55,4 +55,11 @@ class Shop extends Model
             default     => 'text-gray-400',
         };
     }
+    public function ward_info() // Đặt tên là ward_info để tránh trùng với tên cột 'ward'
+    {
+        // 'ward' là tên cột trong bảng shops của bạn
+        // 'code' là tên cột mã phường trong bảng wards
+        return $this->belongsTo(\App\Models\Ward::class, 'ward', 'code');
+    }
+    
 }

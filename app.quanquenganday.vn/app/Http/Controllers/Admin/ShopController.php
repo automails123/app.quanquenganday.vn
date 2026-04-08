@@ -10,6 +10,7 @@ class ShopController extends Controller
 {
     public function index(Request $request)
     {
+        
         $query = Shop::query()->with('sale'); // Eager load để lấy thông tin người giới thiệu
 
         // 1. Tìm kiếm theo tên hoặc điện thoại

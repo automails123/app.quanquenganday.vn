@@ -131,7 +131,7 @@
                 <div>
                     <p class="text-xs text-gray-400 font-bold">Phường</p>
                     <p class="font-bold text-sm md:text-base leading-none text-gray-800 capitalize">
-                        {{ $shop->ward ?? 'Chưa cập nhật' }}</p>
+                        {{ $shop->ward_info->name ?? 'Chưa cập nhật' }}</p>
                 </div>
             </div>
             <div class="flex items-center gap-3 md:gap-4 mb-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
@@ -147,7 +147,7 @@
                 <div>
                     <p class="text-xs text-gray-400 font-bold">Tỉnh / TP</p>
                     <p class="font-bold text-sm md:text-base leading-none text-gray-800 capitalize">
-                        {{ $shop->city ?? 'Chưa cập nhật' }}</p>
+                        {{ $shop->ward_info->province->name ?? 'Chưa cập nhật' }}</p>
                 </div>
             </div>
         </div>

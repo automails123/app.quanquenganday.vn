@@ -18,4 +18,9 @@ class Ward extends Model
     protected $fillable = ['code', 'name', 'province_code'];
 
     public $timestamps = false; // Nếu bảng wards của bạn không có cột created_at/updated_at
+    public function province()
+    {
+        // Giả sử bảng wards có cột province_code nối sang code của bảng provinces
+        return $this->belongsTo(\App\Models\Province::class, 'province_code', 'code');
+    }
 }

@@ -11,6 +11,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
@@ -116,14 +118,6 @@ class User extends Authenticatable implements MustVerifyEmail
         $price = (float) get_pos_setting('default_price', 1800000);
         $directRate = (float) get_pos_setting('commission_rate', 15) / 100;
         
-        // Lấy đơn hàng ĐÃ THANH TOÁN trong tháng này của bản thân
-        // $myOrders = $this->hasMany(Order::class, 'sale_id')
-        //     ->where('status', 'paid')
-        //     ->whereMonth('created_at', now()->month)
-        //     ->whereYear('created_at', now()->year)
-        //     ->get();        
-        // $myCount = $myOrders->count();
-
         $myCount = $this->orders()
         ->where('status', 'paid')
         ->whereMonth('created_at', now()->month)
@@ -181,13 +175,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // 6. Quản lý khu vực (5% doanh số khu vực)
         $areaBonus = 0;
-        if ($this->is_area_manager) {
-            $areaBonus = \App\Models\Order::where('status', 'paid')
-                ->whereMonth('created_at', now()->month)
-                ->whereHas('shop', function($q) {
-                    $q->where('ward', $this->ward); // Giả sử quản lý theo phường
-                })->sum('amount') * 0.05;
-        }
+        $areaBonus = \App\Models\Order::where('status', 'paid')
+            ->whereMonth('created_at', now()->month)
+            ->whereHas('shop', function($q) {
+                $q->where('ward', $this->ward); // Giả sử quản lý theo phường
+            })->sum('amount') * 0.05;
 
         return [
             'direct' => $direct,
@@ -252,4 +244,19 @@ public function getStatusClassAttribute()
         default   => 'text-gray-500',
     };
 }
+/**
+     * Kết nối với bảng hoa hồng (Commissions)
+     */
+    public function commissions(): HasMany
+    {
+        return $this->hasMany(Commission::class);
+    }
+
+    /**
+     * Kết nối với bảng nhật ký số dư (BalanceLogs)
+     */
+    public function balanceLogs(): HasMany
+    {
+        return $this->hasMany(BalanceLog::class);
+    }
 }

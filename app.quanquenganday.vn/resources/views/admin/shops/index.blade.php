@@ -19,11 +19,10 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="text-gray-400 text-sm border-b border-gray-100">
-                        <th class="pb-3 px-4 font-medium max-md:whitespace-nowrap max-md:min-w-60">TÊN QUÁN</th>
-                        <th class="pb-3 px-4 font-medium max-md:whitespace-nowrap">CHỦ QUÁN</th>
-                        <th class="pb-3 px-4 font-medium max-md:whitespace-nowrap max-md:min-w-52">SALE HỖ TRỢ</th>
-                        <th class="pb-3 px-4 font-medium max-md:whitespace-nowrap md:w-60">TRẠNG THÁI</th>
-                        {{-- <th class="pb-3 font-medium max-md:whitespace-nowrap text-right">THAO TÁC</th> --}}
+                        <th class="pb-3 px-4 font-medium max-md:whitespace-nowrap max-md:min-w-60 text-left">TÊN QUÁN</th>
+                        <th class="pb-3 px-4 font-medium max-md:whitespace-nowrap text-left">CHỦ QUÁN</th>
+                        <th class="pb-3 px-4 font-medium max-md:whitespace-nowrap text-left max-md:min-w-52">SALE HỖ TRỢ</th>
+                        <th class="pb-3 px-4 font-medium max-md:whitespace-nowrap text-center md:w-60">TRẠNG THÁI</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">

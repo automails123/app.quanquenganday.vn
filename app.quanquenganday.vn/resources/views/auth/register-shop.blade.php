@@ -1,8 +1,8 @@
 <x-guest-layout>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    
+
     @vite(['resources/css/custom.css', 'resources/js/app.js'])
-   
+
     <div class="bg-gray-50 min-h-screen flex flex-col items-center justify-center p-5 md:p-8">
         <div class="max-w-xl md:max-w-2xl mx-auto ">
             <div class="text-center mb-8">
@@ -170,7 +170,9 @@
                                             d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                     </svg>
                                 </span>
-                                <select id="ward_select" name="ward" class="mt-1 w-full pl-10 pr-4 py-3 border border-gray-200 rounded-2xl" required></select>
+                                <select id="ward_select" name="ward"
+                                    class="mt-1 w-full pl-10 pr-4 py-3 border border-gray-200 rounded-2xl"
+                                    required></select>
                             </div>
                         </div>
                         <div>
@@ -295,6 +297,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
+           
             $('#ward_select').select2({
                 ajax: {
                     url: "/api/search-wards",
@@ -305,21 +308,14 @@
                             q: params.term
                         };
                     },
-                    processResults: function(data) {                        
-                        // Select2 bắt buộc cần trường 'id' và 'text'
-                        var results = data.map(function(item) {   
-                            console.log(item);
-                            return {
-                                id: item.id,
-                                text: item.ward_name, //+ ' (' + item.province_name + ')'
-                                p_name: item.province_name,
-                                p_id: item.province_code
-                            };
-                        });
+                    processResults: function(data) {
+                        // VÌ CONTROLLER ĐÃ TRẢ VỀ { results: [...] } 
+                        // NÊN Ở ĐÂY CHỈ CẦN RETURN LUÔN DATA LÀ XONG
                         return {
-                            results: results
+                            results: data.results
                         };
-                    }
+                    },
+                    cache: true
                 },
                 minimumInputLength: 2,
                 placeholder: "Gõ để tìm phường/xã",
@@ -329,20 +325,23 @@
                         return "Vui lòng nhập 2 ký tự trở lên...";
                     },
                     noResults: function() {
-                        return " không tìm thấy phường này";
+                        return "Không tìm thấy phường này";
                     },
                     searching: function() {
                         return "Đang tìm kiếm...";
                     }
                 },
             });
-            $('#ward_select').on('select2:select', function (e) {
-            var data = e.params.data;
-            // Gán tên tỉnh vào ô hiển thị
-            $('#province_display').val(data.p_name);
-            // Gán ID tỉnh vào input ẩn
-            $('#province_code').val(data.p_id);
-        });
+
+            // Khi chọn một phường, lấy thêm thông tin tỉnh để điền vào các ô khác
+            $('#ward_select').on('select2:select', function(e) {
+                var data = e.params.data; // Đây chính là item trong formattedData của Controller
+                
+                // Gán tên tỉnh vào ô hiển thị (ID phải khớp với HTML của Duyqt)
+                $('#province_display').val(data.province_name);
+                // Gán mã tỉnh vào input ẩn
+                $('#province_code').val(data.province_code);
+            });
         });
     </script>
     <script>

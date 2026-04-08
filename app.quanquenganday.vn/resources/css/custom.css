@@ -13,3 +13,7 @@
 .select2-dropdown.select2-dropdown--below .select2-search__field {
 @apply px-3 py-2 border border-gray-400 rounded-xl;
 }
+
+.select2-container--default .select2-selection--multiple {
+    @apply w-full px-3 pb-3 border border-gray-200 rounded-2xl h-auto;
+}

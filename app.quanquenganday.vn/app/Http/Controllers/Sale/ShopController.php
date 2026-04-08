@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class ShopController extends Controller
 {
     
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         
@@ -29,10 +29,10 @@ class ShopController extends Controller
                 ->orWhere('phone', 'LIKE', "%{$search}%");
             });
         }
-
+    $totalCount = $query->count();
         $shops = $query->latest()->paginate(10);
 
-        return view('admin.shops.index', compact('shops'));
+        return view('sale.shops.index', compact('shops', 'totalCount'));
     }
 
     /**
@@ -45,5 +45,6 @@ class ShopController extends Controller
         $shop = Shop::where('sale_id', auth()->id())->findOrFail($id);
 
         return view('sale.shops.show', compact('shop'));
+        
     }
 }

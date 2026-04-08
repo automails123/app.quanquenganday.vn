@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class BalanceLog extends Model
 {
     use HasFactory;
-
+protected $table = 'balance_logs';
     // Các trường cho phép lưu vào database
     protected $fillable = [
         'user_id',

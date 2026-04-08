@@ -2,7 +2,9 @@
     {{-- <x-slot name="header">
 
     </x-slot> --}}
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    @vite(['resources/css/custom.css', 'resources/js/app.js'])
 
     <div class="md:py-12 container mx-auto max-md:mb-10 min-h-screen p-4">
         <div class="mb-4 md:mb-6">
@@ -41,24 +43,24 @@
         </div>
 
         <div id="assignModal" class="hidden fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
-            <div class="bg-white w-full max-w-m4 md:p-7 rounded-3xl p-10 shadow-2xl">
-                <h2 id="modal_title" class="text-2xl font-bold mb-8">Gán phường</h2>
+            <div class="bg-white w-full max-w-screen-md rounded-3xl p-4 md:p-7 shadow-xl">
+                <h2 id="modal_title" class="text-2xl font-bold mb-4 md:mb-8">Gán phường</h2>
 
                 <form action="{{ route('admin.assign.store') }}" method="POST">
                     @csrf
                     <input type="hidden" id="user_id_input" name="user_id">
 
                     <div class="mb-8">
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-3 ml-1">Chọn danh sách
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-3">Chọn danh sách
                             phường</label>
                         <select id="ward_select_multi" name="ward_codes[]" class="w-full" multiple="multiple"></select>
                     </div>
 
-                    <div class="flex gap-4">
-                        <button type="button" onclick="closeModal()" class="flex-1 py-4 font-bold text-gray-400">Hủy
+                    <div class="flex gap-2 md:gap-4">
+                        <button type="button" onclick="closeModal()" class="flex-1 py-2.5 md:py-4 rounded-2xl font-bold text-gray-400 bg-gray-100">Hủy
                             bỏ</button>
                         <button type="submit"
-                            class="flex-1 bg-black text-white py-4 rounded-2xl font-bold shadow-lg">Xác nhận</button>
+                            class="flex-1 bg-black text-white py-2.5 md:py-4 rounded-2xl font-bold shadow-lg">Xác nhận</button>
                     </div>
                 </form>
             </div>
@@ -121,8 +123,9 @@
                         q: params.term
                     }),
                     processResults: data => ({
-                        results: data
-                    })
+                        results: data.results
+                    }),
+                    cache: true
                 }
             });
 

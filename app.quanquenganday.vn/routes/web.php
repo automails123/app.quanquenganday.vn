@@ -26,7 +26,8 @@ use App\Http\Controllers\Admin\CommissionController as AdminCommissionController
 
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware([
@@ -75,6 +76,11 @@ Route::middleware(['auth', 'role:sale'])->prefix('sale')->name('sale.')->group(f
     // Nếu đã ở trong Group prefix('sale')
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
+
+
+    Route::get('/invited-shops', [ShopController::class, 'index'])->name('shops.index');
+    // Route xem chi tiết quán
+    Route::get('/invited-shops/{id}', [ShopController::class, 'show'])->name('shops.show');
 
 });
 
@@ -125,6 +131,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         
         // Xử lý cộng/trừ số dư (Dùng chung 1 hàm hoặc tách ra)
         Route::post('/adjust-balance/{id}', [AdminCommissionController::class, 'adjustBalance'])->name('adjust');
+        Route::get('/user/{id}', [AdminCommissionController::class, 'userDetail'])->name('user_detail');
     });
 
 });
@@ -172,9 +179,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/verify-otp', [OTPController::class, 'verifyOtp'])->name('otp.verify');
 
     Route::post('/verify-cccd/upload', [CCCDController::class, 'upload'])->name('cccd.upload');
-    Route::get('/invited-shops', [ShopController::class, 'index'])->name('sale.shops.index');
-    // Route xem chi tiết quán
-    Route::get('/invited-shops/{id}', [ShopController::class, 'show'])->name('sale.shops.show');
+    
 });
 
 

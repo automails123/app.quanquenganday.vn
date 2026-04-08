@@ -17,23 +17,23 @@
         </div>
         <div class="bg-white overflow-hidden shadow-xl rounded-2xl md:rounded-3xl p-3 md:p-6 lg:p-8">
             <div class="grid grid-cols-2 gap-4 lg:gap-7 mb-8">
-                <a href="{{ route('sale.shops.index') }}" class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-[2rem] border border-gray-100 text-center no-underline">
+                <a href="{{ route('sale.shops.index') }}" class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-3xl border border-gray-100 text-center no-underline">
                     <p class="text-lg md:text-xl font-bold text-gray-900 mb-1">{{ $countShops }}</p>
                     <p class="text-gray-500 text-xs md:text-base font-semibold">Tổng quán đã mời</p>
                 </a>
 
-                <div class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-[2rem] border border-gray-100 text-center">
+                <div class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-3xl border border-gray-100 text-center">
                     <p class="text-lg md:text-xl font-bold text-gray-900 mb-1">{{ $countSalesF1 }}</p>
                     <p class="text-gray-500 text-xs md:text-base font-semibold">Tổng sale đã mời</p>
 
                 </div>
 
-                <div class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-[2rem] border border-gray-100 text-center">
+                <div class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-3xl border border-gray-100 text-center">
                     <p class="text-lg md:text-xl font-bold text-gray-900 mb-1">{{ $posThisMonth }} </p>
                     <p class="text-gray-500 text-xs md:text-base font-semibold">POS tháng này</p>
                 </div>
 
-                <div class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-[2rem] border border-gray-100 text-center">
+                <div class="bg-gray-50 p-3 md:p-5 rounded-2xl md:rounded-3xl border border-gray-100 text-center">
                     <p class="text-lg md:text-xl font-bold text-gray-900 mb-1">{{ $activeShops }}</p>
                     <p class="text-gray-500 text-xs md:text-base font-semibold">Quán Active</p>
                 </div>

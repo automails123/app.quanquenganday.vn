@@ -31,6 +31,7 @@ class AffiliateController extends Controller
     }
     // Lưu dữ liệu Quán
     public function storeShop(Request $request) {   
+        
        $request->validate([
         'ref_code' => 'required|exists:users,affiliate_id',
             'shop_name'    => 'required|string|max:255',
@@ -69,7 +70,6 @@ class AffiliateController extends Controller
             $cccdPath = $file->storeAs('shops/cccd', $fileName, 'public');
         }
         $cccdPath = $request->hasFile('cccd_file') ? $request->file('cccd_file')->store('shops/cccd', 'public') : null;
-        
 
         // 4. Lưu vào bảng shops
         Shop::create([
