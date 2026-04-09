@@ -9,9 +9,11 @@
                 <span class="text-sm md:text-base">Quay lại</span>
             </a>
             <div class="flex max-md:flex-col md:items-center justify-between md:gap-1 mb-3 md:mb-6">
-                <h2 class="text-gray-900 text-base font-semibold">Danh sách quán đã mời</h2>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900">Danh sách quán đã mời</h2>
+                    <p class="text-sm text-gray-500">Click vào các quán để xem chi tiết</p>
+                </div>
                 <span class="text-2xl font-black ">{{ $totalCount }} quán</span>
-
             </div>
 
             <div class="space-y-4 max-md:mb-16">

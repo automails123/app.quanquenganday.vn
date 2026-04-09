@@ -19,7 +19,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $currentMonth = now()->month;
-    $currentYear = now()->year;
+        $currentYear = now()->year;
 
         // 1. Lấy tổng số quán đã mời (Dữ liệu cho ô "128 quán")
         $countShops = Shop::where('sale_id', $user->id)->count();
@@ -39,43 +39,58 @@ class DashboardController extends Controller
             ->count();
 
             // Tính tổng hoa hồng + kpi đã được duyệt (paid) trong tháng
-    // 1. Tính số dư cá nhân của Sale đang đăng nhập (Lấy trực tiếp từ DB cho chính xác)
-    $monthlyBalance = \App\Models\Order::where('sale_id', $user->id)
-        ->where('status', 'paid')
-        ->whereMonth('created_at', $currentMonth)
-        ->whereYear('created_at', $currentYear)
-        ->selectRaw('SUM(commission + kpi_bonus) as total')
-        ->first()->total ?? 0;
+        // 1. Tính số dư cá nhân của Sale đang đăng nhập (Lấy trực tiếp từ DB cho chính xác)
+        $monthlyBalance = \App\Models\Order::where('sale_id', $user->id)
+            ->where('status', 'paid')
+            ->whereMonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->selectRaw('SUM(commission + kpi_bonus) as total')
+            ->first()->total ?? 0;
 
-    // 2. Lấy danh sách Top 5 Thu nhập (Dùng Cache để nhẹ server)
-//     $topSales = \Illuminate\Support\Facades\Cache::remember('top_income_monthly', 3600, function () use ($currentMonth, $currentYear) {
-//     return \App\Models\User::where('role', 'sale')
-//         // Tạo một cột ảo tên là total_income bằng câu lệnh SQL SUBQUERY
-//         ->addSelect(['total_income' => \App\Models\Order::selectRaw('SUM(commission + kpi_bonus)')
-//             ->whereColumn('sale_id', 'users.id')
-//             ->where('status', 'paid')
-//             ->whereMonth('created_at', $currentMonth)
-//             ->whereYear('created_at', $currentYear)
-//         ])
-//         // Bây giờ bạn có thể orderBy thoải mái bằng cái tên total_income
-//         ->orderBy('total_income', 'desc')
-//         ->take(5)
-//         ->get();
-// });
-$topSales = User::where('role', 'sale')
-    ->addSelect(['total_income' => Order::selectRaw('IFNULL(SUM(commission + kpi_bonus), 0)')
-        ->whereColumn('sale_id', 'users.id')
-        ->where('status', 'paid')
-        ->whereMonth('created_at', $currentMonth)
-        ->whereYear('created_at', $currentYear)
-    ])
-    ->orderBy('total_income', 'desc')
-    ->take(5)
-    ->get();
-        // 6. Kiểm tra thông báo chưa đọc (Để hiện chấm đỏ trên icon Chuông)
-        // $hasUnreadNoti = SystemNotification::where('user_id', $user->id)
-        //     ->where('is_read', false)
-        //     ->exists();
+            // 2. Lấy danh sách Top 5 Thu nhập (Dùng Cache để nhẹ server)
+        //     $topSales = \Illuminate\Support\Facades\Cache::remember('top_income_monthly', 3600, function () use ($currentMonth, $currentYear) {
+        //     return \App\Models\User::where('role', 'sale')
+        //         // Tạo một cột ảo tên là total_income bằng câu lệnh SQL SUBQUERY
+        //         ->addSelect(['total_income' => \App\Models\Order::selectRaw('SUM(commission + kpi_bonus)')
+        //             ->whereColumn('sale_id', 'users.id')
+        //             ->where('status', 'paid')
+        //             ->whereMonth('created_at', $currentMonth)
+        //             ->whereYear('created_at', $currentYear)
+        //         ])
+        //         // Bây giờ bạn có thể orderBy thoải mái bằng cái tên total_income
+        //         ->orderBy('total_income', 'desc')
+        //         ->take(5)
+        //         ->get();
+        // });
+        $topSales = User::where('role', 'sale')
+        ->addSelect(['total_income' => Order::selectRaw('IFNULL(SUM(commission + kpi_bonus), 0)')
+            ->whereColumn('sale_id', 'users.id')
+            ->where('status', 'paid')
+            ->whereMonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+        ])
+        ->orderBy('total_income', 'desc')
+        ->take(5)
+        ->get();
+            // 6. Kiểm tra thông báo chưa đọc (Để hiện chấm đỏ trên icon Chuông)
+            // $hasUnreadNoti = SystemNotification::where('user_id', $user->id)
+            //     ->where('is_read', false)
+            //     ->exists();
+
+
+        // Lấy tổng hoa hồng hiển thị ở trang chủ
+        $monthlyTotal = $user->monthly_closings()
+                            ->where('month', $currentMonth)
+                            ->where('year', $currentYear)
+                            ->first();
+
+        // Lấy chi tiết các nguồn để hiện khi click
+        $commissionDetails = [
+            'direct' => $user->orders()->where('status', 'paid')->whereMonth('created_at', $currentMonth)->get(),
+            'f1_share' => $user->f1_commission_logs()->whereMonth('created_at', $currentMonth)->get(),
+            'kpi' => $monthlyTotal->kpi_bonus ?? 0
+        ];
+
 
         return view('sale.dashboard', compact(
             'user', 
@@ -85,7 +100,10 @@ $topSales = User::where('role', 'sale')
             'activeShops', 
             'topSales',
             // 'hasUnreadNoti',
-            'monthlyBalance'
+            'monthlyBalance',
+
+            'monthlyTotal', 'commissionDetails'
         ));
     }
+
 }

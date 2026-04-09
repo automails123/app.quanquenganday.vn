@@ -3,7 +3,7 @@
 
     </x-slot> --}}
 
-    <div class="md:py-12 container mx-auto max-md:mb-10 min-h-screen">
+    <div class="md:py-12 container mx-auto max-md:mb-10 min-h-screen md:px-4">
         <div class="bg-white overflow-hidden shadow-xl round-2xl md:rounded-2xl pt-4 pb-12 px-4 md:p-5 lg:p-7 ">
             <div class="flex items-start mb-4 md:mb-6">
                 <a href="javascript:history.back()"
@@ -67,9 +67,9 @@
                                         d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z">
                                     </path>
                                 </svg>
-                                <input type="text" id="price_input_2"
+                                <input disabled type="text" id="price_input_2"
                                     value="{{ number_format($defaultPrice, 0, ',', '.') }}đ / năm" readonly
-                                    class="w-full pl-9 pr-4 py-3 text-sm text-gray-500 placeholder:text-gray-400 focus:outline-1 focus:-outline-offset-1 focus:outline-indigo-600 rounded-2xl shadow-sm border border-gray-200">
+                                    class="w-full pl-9 pr-4 py-3 text-sm text-gray-500 placeholder:text-gray-400  rounded-2xl shadow-sm border border-gray-200">
                                 <input name="price_input" type="hidden" id="price_input" value="{{ $defaultPrice }}"
                                     readonly>
                             </div>
@@ -86,8 +86,8 @@
                                         d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-68-76a12,12,0,1,1-12-12A12,12,0,0,1,140,132Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,132ZM96,172a12,12,0,1,1-12-12A12,12,0,0,1,96,172Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,140,172Zm44,0a12,12,0,1,1-12-12A12,12,0,0,1,184,172Z">
                                     </path>
                                 </svg>
-                                <input type="text" id="cycle_2" value="1 năm" readonly
-                                    class="w-full pl-9 pr-4 py-3 text-sm text-gray-500 placeholder:text-gray-400 focus:outline-1 focus:-outline-offset-1 focus:outline-indigo-600 rounded-2xl shadow-sm border border-gray-200">
+                                <input disabled type="text" id="cycle_2" value="1 năm" readonly
+                                    class="w-full pl-9 pr-4 py-3 text-sm text-gray-500 placeholder:text-gray-400 rounded-2xl shadow-sm border border-gray-200">
                                 <input name="cycle" type="hidden" id="cycle" value="1">
                             </div>
                         </div>

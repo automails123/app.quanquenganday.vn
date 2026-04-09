@@ -3,7 +3,7 @@
 
     </x-slot> --}}
 
-    <div class="md:py-12 container mx-auto max-md:mb-10 min-h-screen">
+    <div class="md:py-12 container mx-auto max-md:mb-10 min-h-screen md:px-4">
         <div class="bg-white overflow-hidden shadow-xl round-2xl md:rounded-2xl p-4 md:p-5 lg:p-7">
             <div class="flex items-start mb-4 md:mb-6">
                 <a href="javascript:history.back()"

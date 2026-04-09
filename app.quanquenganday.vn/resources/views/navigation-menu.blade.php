@@ -15,7 +15,7 @@
                 </svg> {{ __('Home') }}
             </x-nav-link>
             <div class="relative max-md:flex-1">
-                <x-dropdown align="right" width="100" dropdownClasses="max-md:top-0 max-md:bottom-16 max-md:w-full"
+                <x-dropdown align="left" width="100" dropdownClasses="max-md:top-0 max-md:bottom-16 max-md:w-full"
                     contentClasses="max-md:h-full max-md:h-[calc(100vh-75px)] bg-white overflow-hidden">
                     <x-slot name="trigger">
                         <span

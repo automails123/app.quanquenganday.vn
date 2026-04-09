@@ -117,82 +117,119 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $price = (float) get_pos_setting('default_price', 1800000);
         $directRate = (float) get_pos_setting('commission_rate', 15) / 100;
-        
-        $myCount = $this->orders()
-        ->where('status', 'paid')
-        ->whereMonth('created_at', now()->month)
-        ->whereYear('created_at', now()->year)
-        ->count();
+        $myOrders = $this->orders()
+            ->where('status', 'paid')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year);
 
-        // 1. Hoa hồng trực tiếp (270k x số máy)
+        $myCount = $myOrders->count();
+        // ===== 2. Direct =====
         $direct = $myCount * ($price * $directRate);
 
-        // 2. Thưởng KPI cá nhân
-        $kpi_bo_2 = floor($myCount / 2) * 100000;    
-        // Cứ mỗi bộ 3 máy thưởng 300k
-        $kpi_bo_3 = floor($myCount / 3) * 300000;
+        // ===== 3. KPI (tổng tháng) =====
+        $kpi = $this->calculateKpi($myCount);
 
-        $kpi = 0;
-        if ($myCount >= 3) {
-        // Từ 3 máy trở lên: 100k x tổng số máy
-            $kpi = $myCount * 100000;
-        } elseif ($myCount == 2) {
-            // Đúng 2 máy: thưởng cứng 100k
-            $kpi = 100000;
-    }
-
-        // 3. Hoa hồng cân bằng (Team F1) - 100k/máy F1 nếu mình có bán
+        // ===== 4. CÂN BẰNG =====
         $teamBalanced = 0;
-        $f1TotalOrdersCount = 0;
-        if ($myCount >= 1) {
-            foreach ($this->f1s as $f1) {
-                $f1Count = $f1->hasMany(Order::class, 'sale_id')
-                    ->where('status', 'paid')
-                    ->whereMonth('created_at', now()->month)
-                    ->count();
-                $f1TotalOrdersCount += $f1Count;
-                $teamBalanced += ($f1Count * 100000);
-            }
-        }
 
-        // 4. Thưởng doanh thu hệ thống (Giả sử tổng doanh thu tháng của Web là $totalSystemSales)
-        // Mục này thường chốt vào cuối tháng, trên Dashboard nên hiện % chia sẻ dự kiến
-        $systemPoolPercent = 0;
-        if ($myCount >= 3) $systemPoolPercent = 5;
-        elseif ($myCount >= 2) $systemPoolPercent = 3;
-        elseif ($myCount >= 1) $systemPoolPercent = 2;
-
-        // 5. 5% Thu nhập của F1
-        $f1IncomeShare = 0;
         foreach ($this->f1s as $f1) {
-            // Chỉ tính trên hoa hồng trực tiếp của F1 để tránh đệ quy vô tận
-            $f1Direct = $f1->hasMany(Order::class, 'sale_id')
+            $f1Count = $f1->orders()
                 ->where('status', 'paid')
                 ->whereMonth('created_at', now()->month)
-                ->count() * ($price * $directRate);
-            $f1IncomeShare += ($f1Direct * 0.05);
-        }
+                ->count();
 
-        // 6. Quản lý khu vực (5% doanh số khu vực)
-        $areaBonus = 0;
-        $areaBonus = \App\Models\Order::where('status', 'paid')
+            $teamBalanced += min($myCount, $f1Count) * 100000;
+        }
+        // ===== 5. HỆ THỐNG =====
+        $totalSystemPos = Order::where('status', 'paid')
             ->whereMonth('created_at', now()->month)
-            ->whereHas('shop', function($q) {
-                $q->where('ward', $this->ward); // Giả sử quản lý theo phường
-            })->sum('amount') * 0.05;
+            ->count();
+
+        $pool = $totalSystemPos * 180000; // 10%
+
+        $systemBonus = 0;
+
+        // Đếm số người đủ điều kiện
+        $users = User::all();
+
+        $group1 = $users->filter(fn($u) => $u->monthly_pos >= 1)->count();
+        $group2 = $users->filter(fn($u) => $u->monthly_pos >= 2)->count();
+        $group3 = $users->filter(fn($u) => $u->monthly_pos >= 3)->count();
+
+        if ($myCount >= 1 && $group1 > 0) {
+            $systemBonus += ($pool * 0.02) / $group1;
+        }
+        if ($myCount >= 2 && $group2 > 0) {
+            $systemBonus += ($pool * 0.03) / $group2;
+        }
+        if ($myCount >= 3 && $group3 > 0) {
+            $systemBonus += ($pool * 0.05) / $group3;
+        }
+         // ===== 6. F1 5% =====
+        $f1Share = 0;
+
+        foreach ($this->f1s as $f1) {
+            $f1Income = $f1->monthly_earnings['direct']
+                + $f1->monthly_earnings['kpi']
+                + $f1->monthly_earnings['team']
+                + $f1->monthly_earnings['system'];
+
+            $f1Share += $f1Income * 0.05;
+        }
+         // ===== 7. KHU VỰC =====
+       $wards = \DB::table('user_ward')
+        ->where('user_id', auth()->id())
+        ->pluck('ward_code');
+
+    $areaRevenue = Order::join('shops', 'orders.shop_id', '=', 'shops.id')
+        ->whereIn('shops.ward', $wards)
+        ->where('orders.status', 'paid')
+        ->whereMonth('orders.created_at', now()->month)
+        ->whereYear('orders.created_at', now()->year)
+        ->sum('orders.amount');
+
+    $areaBonus = $areaRevenue * 0.05;
+            
+            dd($areaBonus);
+
+        // $areaRevenue = Order::where('status', 'paid')
+        //     ->whereMonth('created_at', now()->month)
+        //     ->whereHas('shop', function ($q) use ($wards) {
+        //         $q->whereIn('ward', $wards);
+        //     })
+        //     ->sum('amount');
+
+// $shops = \App\Models\Shop::whereIn('ward', $wards)->get();
+
+// dd([
+//     'wards' => $wards,
+//     'shops_found' => $shops->count(),
+//     'shops_sample' => $shops->take(5)
+// ]);
+    
+        $total = $direct + $kpi + $teamBalanced + $systemBonus + $f1Share + $areaBonus;
 
         return [
-            'direct' => $direct,
+            'direct' => round($direct),
             'kpi' => $kpi,
             'team' => $teamBalanced,
-            'f1_share' => $f1IncomeShare,
+            'system' => $systemBonus, // THÊM
+            'f1_share' => $f1Share,
             'area' => $areaBonus,
-            'pool' => $systemPoolPercent,
-            'total' => $direct + $kpi + $teamBalanced + $f1IncomeShare + $areaBonus,
+            'total' => round($total),
             'my_count' => $myCount,
-            'f1_count' => $f1TotalOrdersCount
+            // 'f1_count' => $f1TotalOrdersCount
         ];
     }
+private function calculateKpi($count)
+    {
+        if ($count < 2) return 0;
+        if ($count == 2) return 100000;
+        if ($count == 3) return 300000;
+
+        return 300000 + ($count - 3) * 100000;
+    }
+    
     public function getAllSubordinateIds()
     {
         $ids = [$this->id];
@@ -258,5 +295,28 @@ public function getStatusClassAttribute()
     public function balanceLogs(): HasMany
     {
         return $this->hasMany(BalanceLog::class);
+    }
+    public function shops()
+    {
+        return $this->hasMany(Shop::class, 'sale_id');
+    }
+    public function f2s()
+    {
+        return $this->hasManyThrough(User::class, User::class, 'parent_id', 'parent_id', 'id', 'id');
+    }
+
+    public function monthly_closings()
+    {
+        // Một User có nhiều bản chốt lương hàng tháng
+        return $this->hasMany(MonthlyClosing::class);
+    }
+
+    /**
+     * Nếu Duyqt muốn lấy thêm lịch sử hoa hồng F1 (F1 Commission Logs)
+     */
+    public function f1_commission_logs()
+    {
+        // Giả sử Duyqt tạo bảng lưu vết hoa hồng từ F1
+        return $this->hasMany(F1CommissionLog::class, 'user_id');
     }
 }

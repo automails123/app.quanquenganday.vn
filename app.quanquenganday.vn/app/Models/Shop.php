@@ -24,6 +24,7 @@ class Shop extends Model
         'sale_id',
         'pos_price',
         'status',
+        'note',
     ];
 
     /**

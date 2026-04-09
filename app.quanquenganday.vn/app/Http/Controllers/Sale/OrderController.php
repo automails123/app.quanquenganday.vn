@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Sale;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Shop;
-use App\Models\SystemNotification;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +69,7 @@ class OrderController extends Controller
         // if ($request->ajax()) {
         //     return view('sale.orders.partials.list', compact('orders'))->render();
         // }
-$orders = $query->with('user')->latest()->get();
+    $orders = $query->with('user')->latest()->get();
 
     if ($request->ajax()) {
         return view('sale.orders.partials.list', compact('orders','defaultPrice',))->render();
@@ -112,61 +112,70 @@ $orders = $query->with('user')->latest()->get();
             'shop_id.required' => 'Vui lòng chọn quán để lên đơn.',
             'amount.min' => 'Số tiền đơn hàng không hợp lệ.'
         ]);
-
         // Kiểm tra xem quán này có đúng là của Sale này không để tránh hack dữ liệu
         $shop = Shop::where('id', $request->shop_id)
-            ->where('sale_id', auth()->id())
-            ->firstOrFail();
-
-            // dd($request->all());
-
+        ->where('sale_id', auth()->id())
+        ->firstOrFail();
         // Logic tính hoa hồng (Ví dụ: 15% theo chính sách POS)
+        
         $commissionRate = 0.15; 
-        $commission = $request->amount * $commissionRate;
-        // 2. Tính Thưởng KPI dự kiến dựa trên số đơn TRONG THÁNG NÀY
-        // Lấy số đơn đã có + 1 (đơn hiện tại)
-        $orderCount = Order::where('sale_id', auth()->id())
-            ->whereMonth('created_at', now()->month)
-            ->count() + 1;
+        $price = $request->amount;
+        $commission = $price * $commissionRate;
 
-        $kpiBonus = 0;
-        if ($orderCount == 2) {
-            $kpiBonus = 100000; // Đạt mốc 2 đơn
-        } elseif ($orderCount == 3) {
-            $kpiBonus = 200000; // Cộng thêm 200k (để tổng là 300k)
-        }
+        // ===== 2. Đếm POS (order) =====
+        $oldCount = Order::where('sale_id', auth()->id())
+            // ->where('status', 'paid')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+
+        $newCount = $oldCount + 1;            
+
+            // ===== 3. KPI delta =====
+        $oldKpi = $this->calculateKpi($oldCount);
+        $newKpi = $this->calculateKpi($newCount);
+
+        $kpiBonus = $newKpi - $oldKpi;
 
         DB::beginTransaction();
         try {
+
             $order = Order::create([
                 'order_code' => 'DH-POS-' . strtoupper(Str::random(6)),
                 'shop_id' => $request->shop_id,
                 'sale_id' => auth()->id(),
-                'amount' => $request->amount,
-                'commission' => $commission, // Lưu 270.000đ
-                'kpi_bonus' => $kpiBonus,   // Lưu thưởng mốc
-                'status' => 'pending', // Chờ Admin duyệt
+                'amount' => $price,
+                'commission' => $commission,
+                'kpi_bonus' => $kpiBonus, // ✅ chuẩn delta
+                'status' => 'pending',
             ]);
-            SystemNotification::create([
-                'user_id' => auth()->id(),
+
+            Notification::create([
+                'sender_id' => auth()->id(),
                 'title' => 'Lên đơn thành công',
-                'content' => 'Đơn hàng ' . $order->order_code . ' đã được gửi. Vui lòng chờ Admin phê duyệt.',
-                'type' => 'order_created', // Để hiển thị icon đen/trắng theo loại
+                'content' => 'Đơn hàng ' . $order->order_code . ' đã được gửi.',
+                'type' => 'order_created',
                 'is_read' => false
             ]);
 
-            // Gửi thông báo cho hệ thống Admin
-            // Lưu ý: Thông báo này để Admin biết có đơn mới cần xử lý
-            
             DB::commit();
-            return redirect()->route('sale.dashboard')->with('success', 'Đơn hàng đã được khởi tạo thành công!');
-            // return redirect()->route('sale.orders.index')
-            //     ->with('success', 'Tạo đơn hàng thành công! Vui lòng chờ Admin phê duyệt.');
+
+            return redirect()->route('sale.dashboard')
+                ->with('success', 'Đơn hàng đã được tạo!');
 
         } catch (\Exception $e) {
-            DB::rollback();
-            return back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
         }
+    }
+
+    private function calculateKpi($count)
+    {
+        if ($count < 2) return 0;
+        if ($count == 2) return 100000;
+        if ($count == 3) return 300000;
+
+        return 300000 + ($count - 3) * 100000;
     }
 
     /**

@@ -23,7 +23,6 @@ if (!function_exists('calculate_full_income')) {
         $kpi_bonus = 0;
         if ($my_paid_orders == 2) $kpi_bonus = 100000;
         if ($my_paid_orders >= 3) $kpi_bonus = 300000;
-
         // 3 & 5. Thu nhập từ F1 (Team & 5% Thu nhập)
         $team_bonus = 0;
         $f1_tax_bonus = 0;
@@ -125,4 +124,6 @@ if (!function_exists('calculate_pos_earnings')) {
             'total' => $direct + $kpi + $team_bonus + $f1_income_share + $area_bonus
         ];
     }
+
+    
 }

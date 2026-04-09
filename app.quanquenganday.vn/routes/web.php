@@ -82,6 +82,14 @@ Route::middleware(['auth', 'role:sale'])->prefix('sale')->name('sale.')->group(f
     // Route xem chi tiết quán
     Route::get('/invited-shops/{id}', [ShopController::class, 'show'])->name('shops.show');
 
+    Route::put('/shops/{id}', [ShopController::class, 'update'])->name('shops.update');
+
+    // Danh sách F1
+Route::get('/sale/f1-list', [App\Http\Controllers\Sale\SaleReportController::class, 'f1List'])->name('f1.list');
+
+// Chi tiết báo cáo của 1 F1
+Route::get('/sale/f1-detail/{id}', [App\Http\Controllers\Sale\SaleReportController::class, 'f1Detail'])->name('f1.detail');
+
 });
 
 
